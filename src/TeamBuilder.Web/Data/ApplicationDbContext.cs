@@ -17,5 +17,7 @@ namespace TeamBuilder.Web.Data
             IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options, operationalStoreOptions)
         {
         }
+
+        public DbSet<TeamEvent> TeamEvents { get; set; }
     }
 }
