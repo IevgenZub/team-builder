@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'event-registration-component',
@@ -8,7 +9,7 @@ import { FormBuilder } from '@angular/forms';
 export class EventRegistrationComponent {
   eventForm;
     
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private formBuilder: FormBuilder, private http: HttpClient, @Inject('BASE_URL') private baseUrl: string) {
       this.eventForm = formBuilder.group({
         name: '',
         location: ''
@@ -17,6 +18,7 @@ export class EventRegistrationComponent {
 
   public onSubmit(eventData) {
     console.warn('Your event has been submitted', eventData);
+    this.http.post<EventRegistration>(this.baseUrl + 'teamevents', eventData);
     this.eventForm.reset();
   }
 }

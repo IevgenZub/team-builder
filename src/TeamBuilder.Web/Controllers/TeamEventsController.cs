@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TeamBuilder.Web.Data;
+using TeamBuilder.Web.Dto;
 using TeamBuilder.Web.Models;
 
 namespace TeamBuilder.Web.Controllers
@@ -74,12 +75,18 @@ namespace TeamBuilder.Web.Controllers
 
         // POST: api/TeamEvents
         [HttpPost]
-        public async Task<ActionResult<TeamEvent>> PostTeamEvent(TeamEvent teamEvent)
+        public async Task<ActionResult> PostTeamEvent(TeamEventCreateRequest request)
         {
+            var teamEvent = new TeamEvent 
+            { 
+                Name = request.Name, 
+                Location = request.Location 
+            };
+
             _context.TeamEvents.Add(teamEvent);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetTeamEvent", new { id = teamEvent.Id }, teamEvent);
+            return Ok();
         }
 
         // DELETE: api/TeamEvents/5
