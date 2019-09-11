@@ -7,23 +7,36 @@ import { HttpClient } from '@angular/common/http';
   templateUrl: './event-registration.component.html'
 })
 export class EventRegistrationComponent {
-  eventForm;
-    
-  constructor(private formBuilder: FormBuilder, private http: HttpClient, @Inject('BASE_URL') private baseUrl: string) {
-      this.eventForm = formBuilder.group({
-        name: '',
-        location: ''
-      });
+  private eventForm;
+  public teamEvents: any;
+  public columnDefs = [
+    { headerName: 'Name', field: 'name', resizable: true },
+    { headerName: 'Location', field: 'location', resizable: true }
+  ];
+
+  constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string, formBuilder: FormBuilder) {
+    this.eventForm = formBuilder.group({
+      name: '',
+      location: ''
+    });
   }
 
-  public onSubmit(eventData) {
-    console.warn('Your event has been submitted', eventData);
-    this.http.post<EventRegistration>(this.baseUrl + 'teamevents', eventData);
+  ngOnInit() {
+    this.teamEvents = this.http.get(this.baseUrl + 'api/teamevents');
+  }
+
+  onSubmit(eventData) {
+    this.http.post<EventRegistration>(this.baseUrl + 'api/teamevents', eventData).subscribe(
+      //result => this.teamEvents.push(result),
+      error => console.error(error)
+    );
+
     this.eventForm.reset();
   }
 }
 
 interface EventRegistration {
+  id: number;
   name: string;
   location: string;
 }

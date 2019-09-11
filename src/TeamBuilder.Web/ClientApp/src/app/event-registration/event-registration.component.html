@@ -1,16 +1,29 @@
-<h1>Create Event</h1>
+<h1 id="tableLabel">Events</h1>
+<div class="row">
+  <div class="col-8">
+    <p *ngIf="!teamEvents"><em>Loading...</em></p>
+    <ag-grid-angular style="width: 100%; height: 100%;"
+                     class="ag-theme-balham"
+                     [rowData]="teamEvents | async"
+                     [columnDefs]="columnDefs">
+    </ag-grid-angular>
+  </div>
+  <div class="col-4">
+    <h2>Register Event</h2>
+    <form [formGroup]="eventForm" (ngSubmit)="onSubmit(eventForm.value)">
+      <div class="form-group">
+        <label for="Name">Name</label>
+        <input id="name" type="text" formControlName="name" class="form-control" aria-describedby="nameHelp" placeholder="Name">
+        <small id="nameHelp" class="form-text text-muted">Enter event name</small>
+      </div>
+      <div class="form-group">
+        <label for="location">Location</label>
+        <input id="location" type="text" formControlName="location" class="form-control" aria-describedby="locationHelp" placeholder="Location">
+        <small id="locationHelp" class="form-text text-muted">Enter event location</small>
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+  </div>
+</div>
 
-<form [formGroup]="eventForm" (ngSubmit)="onSubmit(eventForm.value)">
-  <div class="form-group">
-    <label for="Name">Name</label>
-    <input id="name" type="text" formControlName="name" class="form-control" aria-describedby="nameHelp" placeholder="Name">
-    <small id="nameHelp" class="form-text text-muted">Enter event name</small>
-  </div>
-  <div class="form-group">
-    <label for="location">Location</label>
-    <input id="location" type="text" formControlName="location" class="form-control" aria-describedby="locationHelp" placeholder="Location">
-    <small id="locationHelp" class="form-text text-muted">Enter event location</small>
-  </div>
-  <button type="submit" class="btn btn-primary">Submit</button>
-</form>
 

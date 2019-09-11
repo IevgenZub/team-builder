@@ -86,7 +86,7 @@ namespace TeamBuilder.Web.Controllers
             _context.TeamEvents.Add(teamEvent);
             await _context.SaveChangesAsync();
 
-            return Ok();
+            return Created($"api/teamevents/{teamEvent.Id}", teamEvent);
         }
 
         // DELETE: api/TeamEvents/5
