@@ -17,7 +17,8 @@ export class EventRegistrationComponent {
       Validators.minLength(3)
     ]),
     location: '',
-    startDate: ''
+    startDate: '',
+    startTime: ''
   });
 
   get name() { return this.eventForm.get('name'); }
@@ -29,18 +30,18 @@ export class EventRegistrationComponent {
         headerName: "Location", field: "location", width: 100
       },
       {
-        headerName: "Owner", field: "owner", width: 100
+        headerName: "Status", field: "status", width: 80
       },
       {
         headerName: "Created", field: "createDate", width: 100,
         cellRenderer: (data) => {
-          return new Date(data.value).toLocaleDateString();
+          return new Date(data.value).toLocaleString();
         }
       },
       {
         headerName: "Start", field: "startDate", width: 100,
         cellRenderer: (data) => {
-          return new Date(data.value).toLocaleDateString();
+          return new Date(data.value).toLocaleString();
         }
       }
     ]

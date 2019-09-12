@@ -30,7 +30,10 @@ namespace TeamBuilder.Web.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TeamEvent>>> GetTeamEvents()
         {
-            return await _context.TeamEvents.ToListAsync();
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var owner = await _userManager.FindByIdAsync(userId);
+
+            return await _context.TeamEvents.Where(te => te.Owner == owner.Email).ToListAsync();
         }
 
         // GET: api/TeamEvents/5
@@ -82,21 +85,23 @@ namespace TeamBuilder.Web.Controllers
         public async Task<ActionResult> PostTeamEvent(TeamEventCreateRequest request)
         {
             var utcNow = DateTime.UtcNow;
-
             var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             var owner = await _userManager.FindByIdAsync(userId);
-            
+            var startDate = Convert.ToDateTime(request.StartDate)
+                    .AddHours(request.StartTime.GetProperty("hour").GetUInt32())
+                    .AddMinutes(request.StartTime.GetProperty("minute").GetUInt32());
+
             var teamEvent = new TeamEvent
             {
                 Name = request.Name,
                 Location = request.Location,
-                StartDate = request.StartDate,
                 MaxAttendees = request.MaxAttendees,
                 MinAttendees = request.MinAttendees,
                 LogoImageUrl = request.LogoImageUrl,
                 LocationImageUrl = request.LogoImageUrl,
                 CreateDate = utcNow,
                 LastModifiedDate = utcNow,
+                StartDate = startDate,
                 Owner = owner.Email,
                 Status = "CREATED"
             };
