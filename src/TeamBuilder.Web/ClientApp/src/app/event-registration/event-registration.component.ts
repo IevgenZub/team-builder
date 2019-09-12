@@ -1,21 +1,42 @@
 import { Component, Inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormControl} from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { GridOptions } from "ag-grid-community";
+import { FormBuilder, Validators, FormControl } from '@angular/forms';
+import { faCheck, faEdit } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'event-registration-component',
   templateUrl: './event-registration.component.html'
 })
 export class EventRegistrationComponent {
-  gridOptions: GridOptions;
+  faCheck = faCheck;
+  faEdit = faEdit;
   teamEvents: any;
-  newEvent = <EventRegistration>{};
+  gridOptions = <GridOptions>{
+    enableRangeSelection: true,
+    columnDefs: [
+      { headerName: "Name", field: "name", width: 150 },
+      { headerName: "Location", field: "location", width: 100 },
+      { headerName: "Status", field: "status", width: 80 },
+      { headerName: "Created", field: "createDate", width: 100, cellRenderer: (data) => new Date(data.value).toLocaleString() },
+      { headerName: "Start", field: "startDate", width: 100, cellRenderer: (data) => new Date(data.value).toLocaleString() }
+    ],
+    defaultColDef: { sortable: true, resizable: true, filter: true },
+    deltaRowDataMode: true,
+    getRowNodeId: function (data) {
+      return data.id;
+    },
+    onGridReady: () => {
+      this.teamEvents.subscribe(rowData => this.gridOptions.api.setRowData(rowData));
+    },
+    onFirstDataRendered(params) {
+      params.api.sizeColumnsToFit();
+      params.api.setSortModel([{ colId: 'createDate', sort: 'desc' }]);
+    }
+  };
+  newEvent = <EventRegistration> {};
   eventForm = this.formBuilder.group({
-    name: new FormControl(this.newEvent.name, [
-      Validators.required,
-      Validators.minLength(3)
-    ]),
+    name: new FormControl(this.newEvent.name, [Validators.required, Validators.minLength(3)]),
     location: '',
     startDate: '',
     startTime: ''
@@ -23,60 +44,11 @@ export class EventRegistrationComponent {
 
   get name() { return this.eventForm.get('name'); }
 
-  private createColumnDefs() {
-    return [
-      { headerName: "Name", field: "name", width: 150 },
-      {
-        headerName: "Location", field: "location", width: 100
-      },
-      {
-        headerName: "Status", field: "status", width: 80
-      },
-      {
-        headerName: "Created", field: "createDate", width: 100,
-        cellRenderer: (data) => {
-          return new Date(data.value).toLocaleString();
-        }
-      },
-      {
-        headerName: "Start", field: "startDate", width: 100,
-        cellRenderer: (data) => {
-          return new Date(data.value).toLocaleString();
-        }
-      }
-    ]
-  }
-
-  private createGridOptions() {
-    return <GridOptions> {
-      enableRangeSelection: true,
-      columnDefs: this.createColumnDefs(),
-      defaultColDef: { sortable: true, resizable: true, filter: true },
-      deltaRowDataMode: true,
-      getRowNodeId: function (data) {
-        return data.id;
-      },
-      onGridReady: () => {
-        this.teamEvents.subscribe(
-          rowData => {
-            // the initial full set of data
-            // note that we don't need to un-subscribe here as it's a one off data load
-            if (this.gridOptions.api) { // can be null when tabbing between the examples
-              this.gridOptions.api.setRowData(rowData);
-            }
-          }
-        );
-      },
-      onFirstDataRendered(params) {
-        params.api.sizeColumnsToFit();
-        params.api.setSortModel([{ colId: 'createDate', sort: 'desc' }]);
-      }
-    };
-  }
-
-  constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string, private formBuilder: FormBuilder) {
-    this.gridOptions = this.createGridOptions();
-  }
+  constructor(
+    private http: HttpClient,
+    @Inject('BASE_URL')
+    private baseUrl: string,
+    private formBuilder: FormBuilder) {}
 
   ngOnInit() {
     this.teamEvents = this.http.get(this.baseUrl + 'api/teamevents');
@@ -84,11 +56,7 @@ export class EventRegistrationComponent {
 
   onSubmit(eventData) {
     this.http.post<EventRegistration>(this.baseUrl + 'api/teamevents', eventData).subscribe(
-      result => {
-        if (this.gridOptions.api) {
-          this.gridOptions.api.updateRowData({ add: [result]})
-        }
-      },
+      result => this.gridOptions.api.updateRowData({ add: [result] }),
       error => console.error(error)
     );
 

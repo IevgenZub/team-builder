@@ -1,6 +1,8 @@
 <h1 id="tableLabel">My Events</h1>
+
 <div class="row">
   <div class="col-9">
+    <!--Grid-->
     <p *ngIf="!teamEvents"><em>Loading...</em></p>
     <ag-grid-angular style="width: 100%; height: 500px;"
                      class="ag-theme-balham"
@@ -43,7 +45,11 @@
           </div>
         </div>
       </div>
-      <button type="submit" [disabled]="!eventForm.valid" class="btn btn-primary">Submit</button>
+      <button type="submit" [disabled]="!eventForm.valid" class="btn btn-primary">
+        <fa-icon style="color:lightgreen" [hidden]="!eventForm.valid" [icon]="faCheck"></fa-icon>
+        <fa-icon [hidden]="eventForm.valid" [icon]="faEdit"></fa-icon>
+        Submit
+      </button>
     </form>
   </div>
 </div>
