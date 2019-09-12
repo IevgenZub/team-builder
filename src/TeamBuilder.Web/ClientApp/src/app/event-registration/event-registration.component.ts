@@ -2,7 +2,7 @@ import { Component, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { GridOptions } from "ag-grid-community";
 import { FormBuilder, Validators, FormControl } from '@angular/forms';
-import { faCheck, faEdit, faCalendar, faNewspaper } from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faEdit, faCalendar} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'event-registration-component',
@@ -12,7 +12,6 @@ export class EventRegistrationComponent {
   faCheck = faCheck;
   faEdit = faEdit;
   faCalendar = faCalendar;
-  faNewspaper = faNewspaper;
   teamEvents: any;
   gridOptions = <GridOptions>{
     enableRangeSelection: true,
