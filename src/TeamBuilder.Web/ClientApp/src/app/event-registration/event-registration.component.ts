@@ -2,7 +2,7 @@ import { Component, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { GridOptions } from "ag-grid-community";
 import { FormBuilder, Validators, FormControl } from '@angular/forms';
-import { faCheck, faEdit, faCalendar } from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faEdit, faCalendar, faNewspaper } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'event-registration-component',
@@ -12,13 +12,14 @@ export class EventRegistrationComponent {
   faCheck = faCheck;
   faEdit = faEdit;
   faCalendar = faCalendar;
+  faNewspaper = faNewspaper;
   teamEvents: any;
   gridOptions = <GridOptions>{
     enableRangeSelection: true,
     columnDefs: [
       { headerName: "Name", field: "name", width: 150 },
       { headerName: "Location", field: "location", width: 100 },
-      { headerName: "Status", field: "status", width: 80 },
+      { headerName: "Status", field: "status", width: 80, cellRenderer: this.statusRenderer },
       { headerName: "Created", field: "createDate", width: 100, cellRenderer: (data) => new Date(data.value).toLocaleString() },
       { headerName: "Start", field: "startDate", width: 100, cellRenderer: (data) => new Date(data.value).toLocaleString() }
     ],
@@ -62,6 +63,15 @@ export class EventRegistrationComponent {
     );
 
     this.eventForm.reset();
+  }
+
+  statusRenderer(params) {
+    switch (params.value) {
+      case "CREATED":
+        return "<span style='color: black'>" + params.value + "</div>";
+      default:
+        return params.value;
+    }
   }
 }
 
