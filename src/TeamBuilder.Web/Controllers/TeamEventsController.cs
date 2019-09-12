@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TeamBuilder.Web.Data;
@@ -16,10 +18,12 @@ namespace TeamBuilder.Web.Controllers
     public class TeamEventsController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public TeamEventsController(ApplicationDbContext context)
+        public TeamEventsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: api/TeamEvents
@@ -77,10 +81,24 @@ namespace TeamBuilder.Web.Controllers
         [HttpPost]
         public async Task<ActionResult> PostTeamEvent(TeamEventCreateRequest request)
         {
-            var teamEvent = new TeamEvent 
-            { 
-                Name = request.Name, 
-                Location = request.Location 
+            var utcNow = DateTime.UtcNow;
+
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var owner = await _userManager.FindByIdAsync(userId);
+            
+            var teamEvent = new TeamEvent
+            {
+                Name = request.Name,
+                Location = request.Location,
+                StartDate = request.StartDate,
+                MaxAttendees = request.MaxAttendees,
+                MinAttendees = request.MinAttendees,
+                LogoImageUrl = request.LogoImageUrl,
+                LocationImageUrl = request.LogoImageUrl,
+                CreateDate = utcNow,
+                LastModifiedDate = utcNow,
+                Owner = owner.Email,
+                Status = "CREATED"
             };
 
             _context.TeamEvents.Add(teamEvent);

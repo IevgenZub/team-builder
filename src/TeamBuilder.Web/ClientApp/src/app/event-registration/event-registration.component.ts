@@ -12,22 +12,39 @@ export class EventRegistrationComponent {
   public gridOptions: GridOptions;
   public teamEvents: any;
 
-  constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string, formBuilder: FormBuilder) {
-    this.eventForm = formBuilder.group({
-      name: '',
-      location: ''
-    });
+  private createColumnDefs() {
+    return [
+      { headerName: "Name", field: "name", width: 150 },
+      {
+        headerName: "Location", field: "location", width: 100
+      },
+      {
+        headerName: "Owner", field: "owner", width: 100
+      },
+      {
+        headerName: "Created", field: "createDate", width: 100,
+        cellRenderer: (data) => {
+          return new Date(data.value).toLocaleDateString();
+        }
+      },
+      {
+        headerName: "Start", field: "startDate", width: 100,
+        cellRenderer: (data) => {
+          return new Date(data.value).toLocaleDateString();
+        }
+      }
+    ]
+  }
 
-    this.gridOptions = <GridOptions>{
+  private createGridOptions() {
+    return <GridOptions> {
       enableRangeSelection: true,
       columnDefs: this.createColumnDefs(),
-
+      defaultColDef: { sortable: true, resizable: true },
       deltaRowDataMode: true,
       getRowNodeId: function (data) {
-        // the code is unique, so perfect for the id
         return data.id;
       },
-
       onGridReady: () => {
         this.teamEvents.subscribe(
           rowData => {
@@ -39,29 +56,23 @@ export class EventRegistrationComponent {
           }
         );
       },
-
       onFirstDataRendered(params) {
         params.api.sizeColumnsToFit();
+        params.api.setSortModel([{ colId: 'createDate', sort: 'desc' }]);
       }
     };
   }
 
-  private createColumnDefs() {
-    return [
-      { headerName: "Name", field: "name", width: 280, resizable: true },
-      {
-        headerName: "Location", field: "location", width: 100, resizable: true,
-        cellRenderer: 'agAnimateSlideCellRenderer'
-      }
-    ]
+  private createForm() {
+    return this.formBuilder.group({
+      name: '',
+      location: ''
+    });
   }
 
-  numberFormatter(params) {
-    if (typeof params.value === 'number') {
-      return params.value.toFixed(2);
-    } else {
-      return params.value;
-    }
+  constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string, private formBuilder: FormBuilder) {
+    this.eventForm = this.createForm();
+    this.gridOptions = this.createGridOptions();
   }
 
   ngOnInit() {
