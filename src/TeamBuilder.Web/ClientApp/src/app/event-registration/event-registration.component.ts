@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { FormBuilder, FormGroup} from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormControl} from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { GridOptions } from "ag-grid-community";
 
@@ -8,10 +8,20 @@ import { GridOptions } from "ag-grid-community";
   templateUrl: './event-registration.component.html'
 })
 export class EventRegistrationComponent {
-  private eventForm: FormGroup;
-  public gridOptions: GridOptions;
-  public teamEvents: any;
-  
+  gridOptions: GridOptions;
+  teamEvents: any;
+  newEvent = <EventRegistration>{};
+  eventForm = this.formBuilder.group({
+    name: new FormControl(this.newEvent.name, [
+      Validators.required,
+      Validators.minLength(4)
+    ]),
+    location: '',
+    startDate: ''
+  });
+
+  get name() { return this.eventForm.get('name'); }
+
   private createColumnDefs() {
     return [
       { headerName: "Name", field: "name", width: 150 },
@@ -63,16 +73,7 @@ export class EventRegistrationComponent {
     };
   }
 
-  private createForm() {
-    return this.formBuilder.group({
-      name:'',
-      location: '',
-      startDate: ''
-    });
-  }
-
   constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string, private formBuilder: FormBuilder) {
-    this.eventForm = this.createForm();
     this.gridOptions = this.createGridOptions();
   }
 
