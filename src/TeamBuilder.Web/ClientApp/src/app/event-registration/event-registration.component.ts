@@ -14,7 +14,7 @@ export class EventRegistrationComponent {
   eventForm = this.formBuilder.group({
     name: new FormControl(this.newEvent.name, [
       Validators.required,
-      Validators.minLength(4)
+      Validators.minLength(3)
     ]),
     location: '',
     startDate: ''
