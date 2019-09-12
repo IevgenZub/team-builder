@@ -50,7 +50,7 @@ export class EventRegistrationComponent {
     return <GridOptions> {
       enableRangeSelection: true,
       columnDefs: this.createColumnDefs(),
-      defaultColDef: { sortable: true, resizable: true },
+      defaultColDef: { sortable: true, resizable: true, filter: true },
       deltaRowDataMode: true,
       getRowNodeId: function (data) {
         return data.id;
