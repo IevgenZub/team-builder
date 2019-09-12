@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup} from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { GridOptions } from "ag-grid-community";
 
@@ -11,7 +11,7 @@ export class EventRegistrationComponent {
   private eventForm: FormGroup;
   public gridOptions: GridOptions;
   public teamEvents: any;
-
+  
   private createColumnDefs() {
     return [
       { headerName: "Name", field: "name", width: 150 },
@@ -65,8 +65,9 @@ export class EventRegistrationComponent {
 
   private createForm() {
     return this.formBuilder.group({
-      name: '',
-      location: ''
+      name:'',
+      location: '',
+      startDate: ''
     });
   }
 
@@ -97,5 +98,6 @@ interface EventRegistration {
   id: number;
   name: string;
   location: string;
+  startDate: Date;
 }
 
