@@ -17,7 +17,7 @@
         <input id="name" type="text" formControlName="name"
                class="form-control" placeholder="Name" required minlength="3">
         <small id="nameHelp" class="form-text text-muted">
-          Enter event name
+          Enter short informative event name
         </small>
         <div *ngIf="name.invalid && (name.dirty || name.touched)"
              class="alert alert-danger">
@@ -38,7 +38,9 @@
         <div class="input-group">
           <input class="form-control" formControlName="startDate" placeholder="yyyy-mm-dd" name="startDate" ngbDatepicker #d="ngbDatepicker">
           <div class="input-group-append">
-            <button class="btn btn-outline-secondary calendar" (click)="d.toggle()" type="button"></button>
+            <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
+              <fa-icon [icon]="faCalendar"></fa-icon>
+            </button>
           </div>
           <div class="input-group">
             <ngb-timepicker id="startTime" formControlName="startTime" required></ngb-timepicker>
