@@ -13,7 +13,6 @@ namespace TeamBuilder.Web.Dto
         public dynamic StartTime { get; set; }
         public int? MinAttendees { get; set; }
         public int? MaxAttendees { get; set; }
-        public string Status { get; set; }
         public string LogoImageUrl { get; set; }
         public string LocationImageUrl { get; set; }
     }

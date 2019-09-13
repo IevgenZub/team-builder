@@ -30,15 +30,18 @@ namespace TeamBuilder.Web.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TeamEvent>>> GetTeamEvents()
         {
+            IQueryable<TeamEvent> teamEvents = _context.TeamEvents;
             if (Request.Query.ContainsKey("my-events"))
             {
                 var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
                 var owner = await _userManager.FindByIdAsync(userId);
 
-                return await _context.TeamEvents.Where(te => te.Owner == owner.Email).ToListAsync();
+                teamEvents = teamEvents.Where(te => te.Owner == owner.Email);
             }
 
-            return await _context.TeamEvents.ToListAsync();
+            return await _context.TeamEvents
+                .OrderByDescending(te=> te.CreateDate)
+                .ToListAsync();
         }
 
         // GET: api/TeamEvents/5
@@ -75,7 +78,6 @@ namespace TeamBuilder.Web.Controllers
             teamEvent.StartDate = startDate;
             teamEvent.MinAttendees = request.MinAttendees;
             teamEvent.MaxAttendees = request.MaxAttendees;
-            teamEvent.Status = request.Status;
             teamEvent.LocationImageUrl = request.LocationImageUrl;
             teamEvent.LogoImageUrl = request.LogoImageUrl;
             teamEvent.LastModifiedDate = DateTime.UtcNow;

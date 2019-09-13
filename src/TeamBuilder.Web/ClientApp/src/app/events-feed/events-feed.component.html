@@ -1,6 +1,8 @@
 <h2 class="text-center">Events Feed</h2>
+<div [hidden]=teamEvents class="text-center"><p>Loading...</p></div>
 <div class="row" *ngFor="let teamEvent of teamEvents">
   <div class="col-12">
+    <br />
     <h4>{{ teamEvent.name }}</h4>
   </div>
   <div class="col-3">
