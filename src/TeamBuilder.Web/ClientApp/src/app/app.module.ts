@@ -13,9 +13,10 @@ import { EventRegistrationComponent } from './event-registration/event-registrat
 import { ApiAuthorizationModule } from 'src/api-authorization/api-authorization.module';
 import { AuthorizeGuard } from 'src/api-authorization/authorize.guard';
 import { AuthorizeInterceptor } from 'src/api-authorization/authorize.interceptor';
-import { NgbModule, NgbDateAdapter, NgbDateStruct, NgbDateNativeAdapter } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule, NgbDateAdapter, NgbDateNativeAdapter } from '@ng-bootstrap/ng-bootstrap';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { EventsGridComponent } from './events-grid/events-grid.component';
+import { EventsFeedComponent } from './events-feed/events-feed.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { EventsGridComponent } from './events-grid/events-grid.component';
     NavMenuComponent,
     HomeComponent,
     EventRegistrationComponent,
-    EventsGridComponent
+    EventsGridComponent,
+    EventsFeedComponent
   ],
   imports: [
     NgbModule,
@@ -36,7 +38,8 @@ import { EventsGridComponent } from './events-grid/events-grid.component';
     ApiAuthorizationModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
-      { path: 'events-grid', component: EventsGridComponent, canActivate: [AuthorizeGuard] }
+      { path: 'events-grid', component: EventsGridComponent, canActivate: [AuthorizeGuard] },
+      { path: 'register-event', component: EventRegistrationComponent, canActivate: [AuthorizeGuard] }
     ])
   ],
   providers: [

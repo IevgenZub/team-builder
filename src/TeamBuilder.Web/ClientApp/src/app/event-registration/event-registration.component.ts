@@ -1,7 +1,9 @@
 import { Component, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FormBuilder, Validators, FormControl } from '@angular/forms';
-import { faCheck, faEdit, faCalendar} from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faEdit, faCalendar } from '@fortawesome/free-solid-svg-icons';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'event-registration',
@@ -29,11 +31,12 @@ export class EventRegistrationComponent {
     private http: HttpClient,
     @Inject('BASE_URL')
     private baseUrl: string,
-    private formBuilder: FormBuilder) {}
+    private formBuilder: FormBuilder,
+    private router: Router) { }
 
   onSubmit(eventData) {
     this.http.post<EventRegistration>(this.baseUrl + 'api/teamevents', eventData).subscribe(
-      result => console.warn(result), //this.gridOptions.api.updateRowData({ add: [result] }),
+      result => this.router.navigate(['/events-grid']),
       error => console.error(error)
     );
 

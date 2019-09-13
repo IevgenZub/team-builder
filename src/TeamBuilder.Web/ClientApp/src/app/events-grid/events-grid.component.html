@@ -1,6 +1,17 @@
-<h1 id="tableLabel">My Events</h1>
-<p *ngIf="!teamEvents"><em>Loading...</em></p>
-<ag-grid-angular style="width: 100%; height: 550px;"
-                 class="ag-theme-balham"
-                 [gridOptions]="gridOptions">
-</ag-grid-angular>
+<div class="row">
+  <div class="col">
+    <h2>Event List</h2>
+  </div>
+  <div class="col">
+    <a [routerLink]="['/register-event']" class="btn btn-primary float-right">Register Event</a>
+  </div>
+</div>
+<div class="row">
+  <div class="col">
+    <p *ngIf="!teamEvents"><em>Loading...</em></p>
+    <ag-grid-angular style="width: 100%; height: 550px;"
+                     class="ag-theme-balham"
+                     [gridOptions]="gridOptions">
+    </ag-grid-angular>
+  </div>
+</div>

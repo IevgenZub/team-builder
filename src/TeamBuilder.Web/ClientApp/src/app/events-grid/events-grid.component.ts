@@ -38,6 +38,6 @@ export class EventsGridComponent implements OnInit {
     private baseUrl: string) { }
 
   ngOnInit() {
-    this.teamEvents = this.http.get(this.baseUrl + 'api/teamevents');
+    this.teamEvents = this.http.get(this.baseUrl + 'api/teamevents?my-events');
   }
 }

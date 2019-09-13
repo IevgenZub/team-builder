@@ -30,10 +30,15 @@ namespace TeamBuilder.Web.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TeamEvent>>> GetTeamEvents()
         {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var owner = await _userManager.FindByIdAsync(userId);
+            if (Request.Query.ContainsKey("my-events"))
+            {
+                var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                var owner = await _userManager.FindByIdAsync(userId);
 
-            return await _context.TeamEvents.Where(te => te.Owner == owner.Email).ToListAsync();
+                return await _context.TeamEvents.Where(te => te.Owner == owner.Email).ToListAsync();
+            }
+
+            return await _context.TeamEvents.ToListAsync();
         }
 
         // GET: api/TeamEvents/5
