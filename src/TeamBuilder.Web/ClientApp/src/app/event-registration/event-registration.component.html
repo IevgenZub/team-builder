@@ -47,10 +47,22 @@
                class="form-control" placeholder="https://mylocations/mylocation.jpg">
       </div>
       <div class="form-group">
+        <div class="row">
+          <div class="col-4">
+            <label for="locationImageUrl">Min attendees</label>
+            <input type="number" id="minAttendees" style="width:120px" formControlName="minAttendees"
+                   class="form-control" min="1" max="1000000">
+          </div>
+          <div class="col-8">
+            <label for="locationImageUrl">Max attendees</label>
+            <input type="number" id="maxAttendees" style="width:120px" formControlName="maxAttendees"
+                   class="form-control" min="1" max="10000000">
+          </div>
+        </div>
       </div>
     </div>
   </div>
-  <div class="row">
+  <div class="row float-right">
     <div class="col">
       <button type="submit" [disabled]="!eventForm.valid" class="btn btn-primary">
         <fa-icon style="color:lightgreen" [hidden]="!eventForm.valid" [icon]="faCheck"></fa-icon>

@@ -16,7 +16,11 @@ export class EventRegistrationComponent {
     name: new FormControl(this.newEvent.name, [Validators.required, Validators.minLength(3)]),
     location: '',
     startDate: '',
-    startTime: ''
+    startTime: '',
+    logoImageUrl: '',
+    locationImageUrl: '',
+    minAttendees: '',
+    maxAttendees: ''
   });
 
   get name() { return this.eventForm.get('name'); }

@@ -98,12 +98,12 @@ namespace TeamBuilder.Web.Controllers
                 MaxAttendees = request.MaxAttendees,
                 MinAttendees = request.MinAttendees,
                 LogoImageUrl = request.LogoImageUrl,
-                LocationImageUrl = request.LogoImageUrl,
+                LocationImageUrl = request.LocationImageUrl,
                 CreateDate = utcNow,
                 LastModifiedDate = utcNow,
                 StartDate = startDate,
                 Owner = owner.Email,
-                Status = "CREATED"
+                Status = "Created"
             };
 
             _context.TeamEvents.Add(teamEvent);
