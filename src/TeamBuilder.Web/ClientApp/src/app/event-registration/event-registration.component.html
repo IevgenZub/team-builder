@@ -1,44 +1,63 @@
 <h2>Register Event</h2>
 <form [formGroup]="eventForm" (ngSubmit)="onSubmit(eventForm.value)">
-  <div class="form-group">
-    <label for="name">Name</label>
-    <input id="name" type="text" formControlName="name"
-           class="form-control" placeholder="Name" required minlength="3">
-    <small id="nameHelp" class="form-text text-muted">
-      Enter short informative event name
-    </small>
-    <div *ngIf="name.invalid && (name.dirty || name.touched)"
-         class="alert alert-danger">
-      <div *ngIf="name.errors.required">
-        Name is required.
+  <div class="row">
+    <div class="col-md-6 col-xs-12">
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input id="name" type="text" formControlName="name"
+               class="form-control" placeholder="Name" required minlength="3">
+        <div *ngIf="name.invalid && (name.dirty || name.touched)"
+             class="alert alert-danger">
+          <div *ngIf="name.errors.required">
+            Name is required.
+          </div>
+          <div *ngIf="name.errors.minlength">
+            Name must be at least 3 characters long.
+          </div>
+        </div>
       </div>
-      <div *ngIf="name.errors.minlength">
-        Name must be at least 3 characters long.
+      <div class="form-group">
+        <label for="location">Location</label>
+        <input id="location" type="text" formControlName="location" class="form-control" placeholder="Location">
+      </div>
+      <div class="form-group">
+        <label for="startDate">Start Date</label>
+        <div class="input-group">
+          <input class="form-control" formControlName="startDate" placeholder="yyyy-mm-dd" name="startDate" ngbDatepicker #d="ngbDatepicker">
+          <div class="input-group-append">
+            <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
+              <fa-icon [icon]="faCalendar"></fa-icon>
+            </button>
+          </div>
+          <div class="input-group">
+            <ngb-timepicker id="startTime" formControlName="startTime" required></ngb-timepicker>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 col-xs-12">
+      <div class="form-group">
+        <label for="logoImageUrl">Logo Image URL</label>
+        <input id="logoImageUrl" type="text" formControlName="logoImageUrl"
+               class="form-control" placeholder="https://myimages/myimage.jpg">
+      </div>
+      <div class="form-group">
+        <label for="locationImageUrl">Location Image URL</label>
+        <input id="locationImageUrl" type="text" formControlName="locationImageUrl"
+               class="form-control" placeholder="https://mylocations/mylocation.jpg">
+      </div>
+      <div class="form-group">
       </div>
     </div>
   </div>
-  <div class="form-group">
-    <label for="location">Location</label>
-    <input id="location" type="text" formControlName="location" class="form-control" placeholder="Location">
-  </div>
-  <div class="form-group">
-    <label for="startDate">Start Date</label>
-    <div class="input-group">
-      <input class="form-control" formControlName="startDate" placeholder="yyyy-mm-dd" name="startDate" ngbDatepicker #d="ngbDatepicker">
-      <div class="input-group-append">
-        <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
-          <fa-icon [icon]="faCalendar"></fa-icon>
-        </button>
-      </div>
-      <div class="input-group">
-        <ngb-timepicker id="startTime" formControlName="startTime" required></ngb-timepicker>
-      </div>
+  <div class="row">
+    <div class="col">
+      <button type="submit" [disabled]="!eventForm.valid" class="btn btn-primary">
+        <fa-icon style="color:lightgreen" [hidden]="!eventForm.valid" [icon]="faCheck"></fa-icon>
+        <fa-icon [hidden]="eventForm.valid" [icon]="faEdit"></fa-icon>
+        Submit
+      </button>
     </div>
   </div>
-  <button type="submit" [disabled]="!eventForm.valid" class="btn btn-primary">
-    <fa-icon style="color:lightgreen" [hidden]="!eventForm.valid" [icon]="faCheck"></fa-icon>
-    <fa-icon [hidden]="eventForm.valid" [icon]="faEdit"></fa-icon>
-    Submit
-  </button>
 </form>
 
