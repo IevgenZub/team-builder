@@ -37,18 +37,44 @@ export class EventRegistrationComponent implements OnInit {
   ngOnInit() {
     this.activatedRouter.queryParams.subscribe(params => {
       if (params['id']) {
-        this.http.get<EventRegistration>("api/teamevents/" + params['id']).subscribe(result => this.teamEvent = result)
+        this.http.get<EventRegistration>("api/teamevents/" + params['id']).subscribe(result => {
+          this.teamEvent = result;
+          if (this.teamEvent.id) {
+            this.eventForm.setValue({
+              name: this.teamEvent.name,
+              location: this.teamEvent.location,
+              startDate: new Date(this.teamEvent.startDate),
+              startTime: {
+                hour: new Date(this.teamEvent.startDate).getHours(),
+                minute: new Date(this.teamEvent.startDate).getMinutes()
+              },
+              minAttendees: this.teamEvent.minAttendees,
+              maxAttendees: this.teamEvent.maxAttendees,
+              logoImageUrl: this.teamEvent.logoImageUrl,
+              locationImageUrl: this.teamEvent.locationImageUrl}); 
+          }
+        });
       }
     });
   }
 
   onSubmit(eventData) {
-    this.http.post<EventRegistration>(this.baseUrl + 'api/teamevents', eventData).subscribe(
-      result => this.router.navigate(['/events-grid']),
-      error => console.error(error)
-    );
-
-    this.eventForm.reset();
+    this.activatedRouter.queryParams.subscribe(params => {
+      if (params['id']) {
+        this.http.put<EventRegistration>(this.baseUrl + 'api/teamevents/' + params['id'], eventData).subscribe(
+          result => this.router.navigate(['/events-grid']),
+          error => console.error(error)
+        );
+      }
+      else {
+        this.http.post<EventRegistration>(this.baseUrl + 'api/teamevents', eventData).subscribe(
+          result => this.router.navigate(['/events-grid']),
+          error => console.error(error)
+        );
+        this.eventForm.reset();
+      }
+    });
+    
   }
 }
 
@@ -57,5 +83,9 @@ interface EventRegistration {
   name: string;
   location: string;
   startDate: Date;
+  locationImageUrl: string;
+  logoImageUrl: string;
+  minAttendees: number;
+  maxAttendees: number;
 }
 

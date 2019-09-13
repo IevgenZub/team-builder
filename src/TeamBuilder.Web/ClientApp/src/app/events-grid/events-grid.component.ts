@@ -22,8 +22,14 @@ export class EventsGridComponent implements OnInit {
       { headerName: "Name", field: "name", width: 150 },
       { headerName: "Location", field: "location", width: 100 },
       { headerName: "Status", field: "status", width: 80},
-      { headerName: "Created", field: "createDate", width: 100, cellRenderer: (data) => new Date(data.value).toLocaleString() },
-      { headerName: "Start", field: "startDate", width: 100, cellRenderer: (data) => new Date(data.value).toLocaleString() }
+      {
+        headerName: "Created", field: "createDate", width: 100,
+        cellRenderer: (data) => new Date(data.value).toLocaleString()
+      },
+      {
+        headerName: "Start", field: "startDate", width: 100,
+        cellRenderer: (data) => new Date(data.value).toLocaleString()
+      }
     ],
     defaultColDef: { sortable: true, resizable: true, filter: true },
     deltaRowDataMode: true,

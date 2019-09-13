@@ -57,14 +57,28 @@ namespace TeamBuilder.Web.Controllers
 
         // PUT: api/TeamEvents/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutTeamEvent(int id, TeamEvent teamEvent)
+        public async Task<IActionResult> PutTeamEvent(int id, TeamEventUpdateRequest request)
         {
-            if (id != teamEvent.Id)
+            if (!ModelState.IsValid)
             {
                 return BadRequest();
             }
 
-            _context.Entry(teamEvent).State = EntityState.Modified;
+            var startDate = Convert.ToDateTime(request.StartDate).Date
+                .AddHours(request.StartTime.GetProperty("hour").GetUInt32())
+                .AddMinutes(request.StartTime.GetProperty("minute").GetUInt32());
+
+            var teamEvent = await _context.TeamEvents.FirstOrDefaultAsync(te => te.Id == id);
+
+            teamEvent.Name = request.Name;
+            teamEvent.Location = request.Location;
+            teamEvent.StartDate = startDate;
+            teamEvent.MinAttendees = request.MinAttendees;
+            teamEvent.MaxAttendees = request.MaxAttendees;
+            teamEvent.Status = request.Status;
+            teamEvent.LocationImageUrl = request.LocationImageUrl;
+            teamEvent.LogoImageUrl = request.LogoImageUrl;
+            teamEvent.LastModifiedDate = DateTime.UtcNow;
 
             try
             {
@@ -89,10 +103,15 @@ namespace TeamBuilder.Web.Controllers
         [HttpPost]
         public async Task<ActionResult> PostTeamEvent(TeamEventCreateRequest request)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
             var utcNow = DateTime.UtcNow;
             var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             var owner = await _userManager.FindByIdAsync(userId);
-            var startDate = Convert.ToDateTime(request.StartDate)
+            var startDate = Convert.ToDateTime(request.StartDate).Date
                     .AddHours(request.StartTime.GetProperty("hour").GetUInt32())
                     .AddMinutes(request.StartTime.GetProperty("minute").GetUInt32());
 
