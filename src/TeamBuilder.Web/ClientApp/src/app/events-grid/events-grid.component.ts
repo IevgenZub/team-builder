@@ -9,12 +9,12 @@ import { HttpClient } from '@angular/common/http';
 })
 export class EventsGridComponent implements OnInit {
   teamEvents: any;
-  gridOptions = <GridOptions>{
+  gridOptions = <GridOptions> {
     enableRangeSelection: true,
     columnDefs: [
       { headerName: "Name", field: "name", width: 150 },
       { headerName: "Location", field: "location", width: 100 },
-      { headerName: "Status", field: "status", width: 80, cellRenderer: this.statusRenderer },
+      { headerName: "Status", field: "status", width: 80},
       { headerName: "Created", field: "createDate", width: 100, cellRenderer: (data) => new Date(data.value).toLocaleString() },
       { headerName: "Start", field: "startDate", width: 100, cellRenderer: (data) => new Date(data.value).toLocaleString() }
     ],
@@ -35,19 +35,9 @@ export class EventsGridComponent implements OnInit {
   constructor(
     private http: HttpClient,
     @Inject('BASE_URL')
-    private baseUrl: string,
-) { }
+    private baseUrl: string) { }
 
   ngOnInit() {
     this.teamEvents = this.http.get(this.baseUrl + 'api/teamevents');
-  }
-
-  statusRenderer(params) {
-    switch (params.value) {
-      case "CREATED":
-        return "<span style='color: black'>" + params.value + "</div>";
-      default:
-        return params.value;
-    }
   }
 }
