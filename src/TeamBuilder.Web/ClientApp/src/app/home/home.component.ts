@@ -1,3 +1,4 @@
+/// <reference path="../event-registration/event-registration.component.ts" />
 import { Component } from '@angular/core';
 
 @Component({

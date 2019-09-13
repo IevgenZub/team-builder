@@ -15,13 +15,15 @@ import { AuthorizeGuard } from 'src/api-authorization/authorize.guard';
 import { AuthorizeInterceptor } from 'src/api-authorization/authorize.interceptor';
 import { NgbModule, NgbDateAdapter, NgbDateStruct, NgbDateNativeAdapter } from '@ng-bootstrap/ng-bootstrap';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { EventsGridComponent } from './events-grid/events-grid.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavMenuComponent,
     HomeComponent,
-    EventRegistrationComponent
+    EventRegistrationComponent,
+    EventsGridComponent
   ],
   imports: [
     NgbModule,
@@ -34,7 +36,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     ApiAuthorizationModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
-      { path: 'event-registration', component: EventRegistrationComponent, canActivate: [AuthorizeGuard] }
+      { path: 'events-grid', component: EventsGridComponent, canActivate: [AuthorizeGuard] }
     ])
   ],
   providers: [
