@@ -62,6 +62,11 @@
     </div>
     <div class="col-12">
       <span class="float-right">
+        <button class="btn btn-secondary" (click)="navigateBack()">
+          <fa-icon style="color: #007bff" [icon]="faBackward"></fa-icon>
+          Back
+        </button>
+        &nbsp;
         <button type="submit" [disabled]="!eventForm.valid" class="btn btn-primary">
           <fa-icon style="color:lightgreen" [hidden]="!eventForm.valid" [icon]="faCheck"></fa-icon>
           <fa-icon [hidden]="eventForm.valid" [icon]="faEdit"></fa-icon>

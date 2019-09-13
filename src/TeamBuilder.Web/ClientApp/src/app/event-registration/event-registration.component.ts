@@ -1,8 +1,9 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FormBuilder, Validators, FormControl } from '@angular/forms';
-import { faCheck, faEdit, faCalendar } from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faEdit, faCalendar, faBackward } from '@fortawesome/free-solid-svg-icons';
 import { Router, ActivatedRoute } from '@angular/router';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'event-registration',
@@ -12,6 +13,7 @@ export class EventRegistrationComponent implements OnInit {
   faCheck = faCheck;
   faEdit = faEdit;
   faCalendar = faCalendar;
+  faBackward = faBackward;
   teamEvent = <EventRegistration> {};
   eventForm = this.formBuilder.group({
     name: new FormControl(this.teamEvent.name, [Validators.required, Validators.minLength(3)]),
@@ -32,7 +34,8 @@ export class EventRegistrationComponent implements OnInit {
     private baseUrl: string,
     private formBuilder: FormBuilder,
     private activatedRouter: ActivatedRoute,
-    private router: Router) {}
+    private router: Router,
+    private location: Location) { }
 
   ngOnInit() {
     this.activatedRouter.queryParams.subscribe(params => {
@@ -75,6 +78,10 @@ export class EventRegistrationComponent implements OnInit {
       }
     });
     
+  }
+
+  navigateBack() {
+    this.location.back();
   }
 }
 
