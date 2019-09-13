@@ -1,6 +1,8 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { GridOptions } from "ag-grid-community";
 import { HttpClient } from '@angular/common/http';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { ActionCellLinkRendererComponent } from '../action-cell-renderer/action-cell-renderer.component';
 
 @Component({
   selector: 'events-grid',
@@ -8,10 +10,15 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./events-grid.component.css']
 })
 export class EventsGridComponent implements OnInit {
+  faPlus = faPlus;
   teamEvents: any;
   gridOptions = <GridOptions> {
     enableRangeSelection: true,
     columnDefs: [
+      {
+        headerName: '', field: 'id', filter: false, sort: false, width: 30,
+        cellRendererFramework: ActionCellLinkRendererComponent
+      },
       { headerName: "Name", field: "name", width: 150 },
       { headerName: "Location", field: "location", width: 100 },
       { headerName: "Status", field: "status", width: 80},

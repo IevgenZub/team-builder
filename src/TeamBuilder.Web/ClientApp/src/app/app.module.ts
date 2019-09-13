@@ -17,6 +17,8 @@ import { NgbModule, NgbDateAdapter, NgbDateNativeAdapter } from '@ng-bootstrap/n
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { EventsGridComponent } from './events-grid/events-grid.component';
 import { EventsFeedComponent } from './events-feed/events-feed.component';
+import { ActionCellLinkRendererComponent } from './action-cell-renderer/action-cell-renderer.component';
+
 
 @NgModule({
   declarations: [
@@ -25,13 +27,14 @@ import { EventsFeedComponent } from './events-feed/events-feed.component';
     HomeComponent,
     EventRegistrationComponent,
     EventsGridComponent,
-    EventsFeedComponent
+    EventsFeedComponent,
+    ActionCellLinkRendererComponent
   ],
   imports: [
     NgbModule,
     FontAwesomeModule,
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
-    AgGridModule.withComponents([]),
+    AgGridModule.withComponents([ActionCellLinkRendererComponent]),
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,

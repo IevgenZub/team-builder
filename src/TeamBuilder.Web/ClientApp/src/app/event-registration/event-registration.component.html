@@ -4,10 +4,9 @@
     <div class="col-md-6 col-xs-12">
       <div class="form-group">
         <label for="name">Name</label>
-        <input id="name" type="text" formControlName="name"
+        <input id="name" type="text" formControlName="name" [(ngModel)]="teamEvent.name"
                class="form-control" placeholder="Name" required minlength="3">
-        <div *ngIf="name.invalid && (name.dirty || name.touched)"
-             class="alert alert-danger">
+        <div *ngIf="name.invalid && (name.dirty || name.touched)" class="alert alert-danger">
           <div *ngIf="name.errors.required">
             Name is required.
           </div>
@@ -18,19 +17,19 @@
       </div>
       <div class="form-group">
         <label for="location">Location</label>
-        <input id="location" type="text" formControlName="location" class="form-control" placeholder="Location">
+        <input id="location" type="text" formControlName="location"  [(ngModel)]="teamEvent.location" class="form-control" placeholder="Location">
       </div>
       <div class="form-group">
         <label for="startDate">Start Date</label>
         <div class="input-group">
-          <input class="form-control" formControlName="startDate" placeholder="yyyy-mm-dd" name="startDate" ngbDatepicker #d="ngbDatepicker">
+          <input class="form-control" formControlName="startDate"  placeholder="yyyy-mm-dd" name="startDate" ngbDatepicker #d="ngbDatepicker">
           <div class="input-group-append">
             <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
               <fa-icon [icon]="faCalendar"></fa-icon>
             </button>
           </div>
           <div class="input-group">
-            <ngb-timepicker id="startTime" formControlName="startTime" required></ngb-timepicker>
+            <ngb-timepicker id="startTime"  formControlName="startTime" required></ngb-timepicker>
           </div>
         </div>
       </div>
@@ -38,37 +37,37 @@
     <div class="col-md-6 col-xs-12">
       <div class="form-group">
         <label for="logoImageUrl">Logo Image URL</label>
-        <input id="logoImageUrl" type="text" formControlName="logoImageUrl"
+        <input id="logoImageUrl" type="text"  [(ngModel)]="teamEvent.logoImageUrl" formControlName="logoImageUrl"
                class="form-control" placeholder="https://myimages/myimage.jpg">
       </div>
       <div class="form-group">
         <label for="locationImageUrl">Location Image URL</label>
-        <input id="locationImageUrl" type="text" formControlName="locationImageUrl"
+        <input id="locationImageUrl" type="text"  [(ngModel)]="teamEvent.locationImageUrl" formControlName="locationImageUrl"
                class="form-control" placeholder="https://mylocations/mylocation.jpg">
       </div>
       <div class="form-group">
         <div class="row">
           <div class="col-4">
             <label for="locationImageUrl">Min attendees</label>
-            <input type="number" id="minAttendees" style="width:120px" formControlName="minAttendees"
+            <input type="number" id="minAttendees" style="width:120px"  [(ngModel)]="teamEvent.minAttendees" formControlName="minAttendees"
                    class="form-control" min="1" max="1000000">
           </div>
           <div class="col-8">
             <label for="locationImageUrl">Max attendees</label>
-            <input type="number" id="maxAttendees" style="width:120px" formControlName="maxAttendees"
+            <input type="number" id="maxAttendees" style="width:120px" [(ngModel)]="teamEvent.maxAttendees" formControlName="maxAttendees"
                    class="form-control" min="1" max="10000000">
           </div>
         </div>
       </div>
     </div>
-  </div>
-  <div class="row float-right">
-    <div class="col">
-      <button type="submit" [disabled]="!eventForm.valid" class="btn btn-primary">
-        <fa-icon style="color:lightgreen" [hidden]="!eventForm.valid" [icon]="faCheck"></fa-icon>
-        <fa-icon [hidden]="eventForm.valid" [icon]="faEdit"></fa-icon>
-        Submit
-      </button>
+    <div class="col-12">
+      <span class="float-right">
+        <button type="submit" [disabled]="!eventForm.valid" class="btn btn-primary">
+          <fa-icon style="color:lightgreen" [hidden]="!eventForm.valid" [icon]="faCheck"></fa-icon>
+          <fa-icon [hidden]="eventForm.valid" [icon]="faEdit"></fa-icon>
+          Submit
+        </button>
+      </span>
     </div>
   </div>
 </form>
