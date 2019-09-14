@@ -18,5 +18,7 @@ namespace TeamBuilder.Web.Models
         public string Status { get; set; }
         public string LogoImageUrl { get; set; }
         public string LocationImageUrl { get; set; }
+        public string Attendees { get; set; }
     }
+
 }

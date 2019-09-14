@@ -15,5 +15,6 @@ namespace TeamBuilder.Web.Dto
         public int? MaxAttendees { get; set; }
         public string LogoImageUrl { get; set; }
         public string LocationImageUrl { get; set; }
+        public dynamic Attendees { get; set; }
     }
 }

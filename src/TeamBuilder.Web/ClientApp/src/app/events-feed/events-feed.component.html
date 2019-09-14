@@ -21,9 +21,17 @@
     <p>{{ teamEvent.location }}</p>
   </div>
   <div class="col-3">
-    <button class="btn btn-primary">
+    <button class="btn btn-primary"
+            [hidden]="teamEvent.attendees.includes(userName)"
+            (click)="attend(teamEvent.id)">
       <fa-icon style="color:lightgreen" [icon]="faPlus"></fa-icon>
       Attend
+    </button>
+    <button class="btn btn-warning"
+            [hidden]="!teamEvent.attendees.includes(userName)"
+            (click)="discard(teamEvent.id)">
+      <fa-icon style="color:lightcoral" [icon]="faMinus"></fa-icon>
+      Discard
     </button>
   </div>
 </div>

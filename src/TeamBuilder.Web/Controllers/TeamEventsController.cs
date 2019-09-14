@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -67,11 +68,16 @@ namespace TeamBuilder.Web.Controllers
                 return BadRequest();
             }
 
+            var teamEvent = await _context.TeamEvents.FirstOrDefaultAsync(te => te.Id == id);
+
+            if (teamEvent == default)
+            {
+                return NotFound();
+            }
+
             var startDate = Convert.ToDateTime(request.StartDate).Date
                 .AddHours(request.StartTime.GetProperty("hour").GetUInt32())
                 .AddMinutes(request.StartTime.GetProperty("minute").GetUInt32());
-
-            var teamEvent = await _context.TeamEvents.FirstOrDefaultAsync(te => te.Id == id);
 
             teamEvent.Name = request.Name;
             teamEvent.Location = request.Location;
@@ -80,6 +86,7 @@ namespace TeamBuilder.Web.Controllers
             teamEvent.MaxAttendees = request.MaxAttendees;
             teamEvent.LocationImageUrl = request.LocationImageUrl;
             teamEvent.LogoImageUrl = request.LogoImageUrl;
+            teamEvent.Attendees = ((JsonElement)request.Attendees).ToString();
             teamEvent.LastModifiedDate = DateTime.UtcNow;
 
             try

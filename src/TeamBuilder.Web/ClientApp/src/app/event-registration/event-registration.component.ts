@@ -35,7 +35,7 @@ export class EventRegistrationComponent implements OnInit {
     private formBuilder: FormBuilder,
     private activatedRouter: ActivatedRoute,
     private router: Router,
-    private location: Location) { }
+    private location: Location) {}
 
   ngOnInit() {
     this.activatedRouter.queryParams.subscribe(params => {
@@ -65,19 +65,17 @@ export class EventRegistrationComponent implements OnInit {
     this.activatedRouter.queryParams.subscribe(params => {
       if (params['id']) {
         this.http.put<EventRegistration>(this.baseUrl + 'api/teamevents/' + params['id'], eventData).subscribe(
-          result => this.router.navigate(['/events-grid']),
+          () => this.router.navigate(['/events-grid']),
           error => console.error(error)
         );
       }
       else {
         this.http.post<EventRegistration>(this.baseUrl + 'api/teamevents', eventData).subscribe(
-          result => this.router.navigate(['/events-grid']),
+          () => this.router.navigate(['/events-grid']),
           error => console.error(error)
         );
-        this.eventForm.reset();
       }
     });
-    
   }
 
   navigateBack() {
