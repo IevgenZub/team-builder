@@ -10,10 +10,6 @@ import { Location } from '@angular/common';
   templateUrl: './event-registration.component.html'
 })
 export class EventRegistrationComponent implements OnInit {
-  faCheck = faCheck;
-  faEdit = faEdit;
-  faCalendar = faCalendar;
-  faBackward = faBackward;
   teamEvent = <EventRegistration> {};
   eventForm = this.formBuilder.group({
     name: new FormControl(this.teamEvent.name, [Validators.required, Validators.minLength(3)]),
@@ -23,8 +19,14 @@ export class EventRegistrationComponent implements OnInit {
     logoImageUrl: '',
     locationImageUrl: '',
     minAttendees: '',
-    maxAttendees: ''
+    maxAttendees: '',
+    attendees: ''
   });
+
+  faCheck = faCheck;
+  faEdit = faEdit;
+  faCalendar = faCalendar;
+  faBackward = faBackward;
 
   get name() { return this.eventForm.get('name'); }
 
@@ -40,8 +42,8 @@ export class EventRegistrationComponent implements OnInit {
   ngOnInit() {
     this.activatedRouter.queryParams.subscribe(params => {
       if (params['id']) {
-        this.http.get<EventRegistration>("api/teamevents/" + params['id']).subscribe(result => {
-          this.teamEvent = result;
+        this.http.get <EventRegistration>("api/teamevents/" + params['id']).subscribe(result => {
+          this.teamEvent =  result;
           if (this.teamEvent.id) {
             this.eventForm.setValue({
               name: this.teamEvent.name,
@@ -54,7 +56,9 @@ export class EventRegistrationComponent implements OnInit {
               minAttendees: this.teamEvent.minAttendees,
               maxAttendees: this.teamEvent.maxAttendees,
               logoImageUrl: this.teamEvent.logoImageUrl,
-              locationImageUrl: this.teamEvent.locationImageUrl}); 
+              locationImageUrl: this.teamEvent.locationImageUrl,
+              attendees: this.teamEvent.attendees
+            }); 
           }
         });
       }
@@ -64,13 +68,13 @@ export class EventRegistrationComponent implements OnInit {
   onSubmit(eventData) {
     this.activatedRouter.queryParams.subscribe(params => {
       if (params['id']) {
-        this.http.put<EventRegistration>(this.baseUrl + 'api/teamevents/' + params['id'], eventData).subscribe(
+        this.http.put(this.baseUrl + 'api/teamevents/' + params['id'], eventData).subscribe(
           () => this.router.navigate(['/events-grid']),
           error => console.error(error)
         );
       }
       else {
-        this.http.post<EventRegistration>(this.baseUrl + 'api/teamevents', eventData).subscribe(
+        this.http.post(this.baseUrl + 'api/teamevents', eventData).subscribe(
           () => this.router.navigate(['/events-grid']),
           error => console.error(error)
         );
@@ -92,5 +96,5 @@ interface EventRegistration {
   logoImageUrl: string;
   minAttendees: number;
   maxAttendees: number;
+  attendees: string;
 }
-

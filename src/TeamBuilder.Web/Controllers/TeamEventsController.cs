@@ -86,7 +86,7 @@ namespace TeamBuilder.Web.Controllers
             teamEvent.MaxAttendees = request.MaxAttendees;
             teamEvent.LocationImageUrl = request.LocationImageUrl;
             teamEvent.LogoImageUrl = request.LogoImageUrl;
-            teamEvent.Attendees = ((JsonElement)request.Attendees).ToString();
+            teamEvent.Attendees = request.Attendees;
             teamEvent.LastModifiedDate = DateTime.UtcNow;
 
             try

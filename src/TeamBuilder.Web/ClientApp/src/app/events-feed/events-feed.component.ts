@@ -53,7 +53,7 @@ export class EventsFeedComponent implements OnInit{
           maxAttendees: teamEvent.maxAttendees,
           locationImageUrl: teamEvent.locationImageUrl,
           logoImageUrl: teamEvent.logoImageUrl,
-          attendees: attendees
+          attendees: JSON.stringify(attendees)
         }
 
         this.http.put(this.baseUrl + 'api/teamevents/' + id, updateRequest).subscribe(
@@ -88,7 +88,7 @@ export class EventsFeedComponent implements OnInit{
         maxAttendees: teamEvent.maxAttendees,
         locationImageUrl: teamEvent.locationImageUrl,
         logoImageUrl: teamEvent.logoImageUrl,
-        attendees: attendees
+        attendees: JSON.stringify(attendees)
       }
 
       this.http.put(this.baseUrl + 'api/teamevents/' + id, updateRequest).subscribe(
