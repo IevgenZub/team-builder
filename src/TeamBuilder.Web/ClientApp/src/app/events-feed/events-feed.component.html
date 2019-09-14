@@ -25,13 +25,13 @@
             [hidden]="teamEvent.attendees.includes(userName)"
             (click)="attend(teamEvent.id)">
       <fa-icon style="color:lightgreen" [icon]="faPlus"></fa-icon>
-      Attend
+      Attend ({{ teamEvent.attendees.split("email").length - 1 }}/{{ teamEvent.maxAttendees }})
     </button>
     <button class="btn btn-warning"
             [hidden]="!teamEvent.attendees.includes(userName)"
             (click)="discard(teamEvent.id)">
       <fa-icon style="color:lightcoral" [icon]="faMinus"></fa-icon>
-      Discard
+      Discard ({{ teamEvent.attendees.split("email").length - 1 }}/{{ teamEvent.maxAttendees }})
     </button>
   </div>
 </div>
