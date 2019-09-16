@@ -2,7 +2,6 @@
 <div [hidden]=teamEvents class="text-center"><p>Loading...</p></div>
 <div class="row" *ngFor="let teamEvent of teamEvents">
   <div class="col-12">
-    <br />
     <h4>{{ teamEvent.name }}</h4>
   </div>
   <div class="col-3">
@@ -28,10 +27,10 @@
         <fa-icon style="color:lightgreen" [icon]="faPlus"></fa-icon>
         Attend
       </button>
-      <button class="btn btn-warning"
+      <button class="btn btn-secondary"
               [hidden]="!teamEvent.attendees.includes(userName)"
               (click)="discard(teamEvent.id)">
-        <fa-icon style="color:lightcoral" [icon]="faMinus"></fa-icon>
+        <fa-icon style="color:red" [icon]="faMinus"></fa-icon>
         Discard 
       </button>
     </span>
@@ -39,5 +38,8 @@
       <span [hidden]="isAuthenticated" class="badge badge-info">Login to attend</span>
       <span class="badge badge-light">{{ teamEvent.attendees.split("email").length - 1 }}/{{ teamEvent.maxAttendees }}</span>
     </div>
+  </div>
+  <div class="col-12">
+    &nbsp;
   </div>
 </div>

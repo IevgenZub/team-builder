@@ -88,6 +88,13 @@ namespace TeamBuilder.Web.Controllers
             teamEvent.LogoImageUrl = request.LogoImageUrl;
             teamEvent.Attendees = request.Attendees;
             teamEvent.LastModifiedDate = DateTime.UtcNow;
+            teamEvent.Photos = request.Photos;
+            teamEvent.Reviews = request.Reviews;
+            teamEvent.Categories= request.Categories;
+            teamEvent.Comments= request.Comments;
+            teamEvent.LocationMapUrl= request.LocationMapUrl;
+            teamEvent.Description = request.Description;
+            teamEvent.TicketPrice = request.TicketPrice;
 
             try
             {
@@ -128,15 +135,23 @@ namespace TeamBuilder.Web.Controllers
             {
                 Name = request.Name,
                 Location = request.Location,
+                Description = request.Description,
+                LocationMapUrl = request.LocationMapUrl,
+                Categories = request.Categories,
+                TicketPrice = request.TicketPrice,
                 MaxAttendees = request.MaxAttendees,
                 MinAttendees = request.MinAttendees,
                 LogoImageUrl = request.LogoImageUrl,
                 LocationImageUrl = request.LocationImageUrl,
+                Status = request.Status,
                 CreateDate = utcNow,
                 LastModifiedDate = utcNow,
                 StartDate = startDate,
                 Owner = owner.Email,
-                Status = "Created"
+                Attendees = "[]",
+                Photos = "[]",
+                Comments = "[]",
+                Reviews = "[]"
             };
 
             _context.TeamEvents.Add(teamEvent);

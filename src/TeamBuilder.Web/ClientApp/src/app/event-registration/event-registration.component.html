@@ -1,7 +1,7 @@
 <h2>Register Event</h2>
 <form [formGroup]="eventForm" (ngSubmit)="onSubmit(eventForm.value)">
   <div class="row">
-    <div class="col-md-6 col-xs-12">
+    <div class="col-12">
       <div class="form-group">
         <label for="name">Name</label>
         <input id="name" type="text" formControlName="name"
@@ -16,13 +16,41 @@
         </div>
       </div>
       <div class="form-group">
+        <label for="description">Description</label>
+        <textarea id="description" rows="2" formControlName="description" class="form-control" placeholder="Description"></textarea>
+      </div>
+      <div class="form-group">
+        <label for="categories">Categories</label>
+        <input id="categories" type="text" formControlName="categories"
+               class="form-control" placeholder="Name" required minlength="3">
+        <div *ngIf="categories.invalid && (categories.dirty || categories.touched)" class="alert alert-danger">
+          <div *ngIf="categories.errors.required">
+            At least one category is required.
+          </div>
+          <div *ngIf="categories.errors.minlength">
+            Category must be at least 3 characters long.
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 col-xs-12">
+      <div class="form-group">
+        <label for="name">Status</label>
+        <input id="name" type="text" formControlName="status"
+               class="form-control" placeholder="Status">
+      </div>
+      <div class="form-group">
         <label for="location">Location</label>
         <input id="location" type="text" formControlName="location" class="form-control" placeholder="Location">
       </div>
       <div class="form-group">
+        <label for="locationMapUrl">Location Map URL</label>
+        <input id="locationMapUrl" type="text" formControlName="locationMapUrl" class="form-control" placeholder="https://goo.gl/maps/Gq1DzpeK42LrLERe6">
+      </div>
+      <div class="form-group">
         <label for="startDate">Start Date</label>
         <div class="input-group">
-          <input class="form-control" formControlName="startDate"  placeholder="yyyy-mm-dd" name="startDate" ngbDatepicker #d="ngbDatepicker">
+          <input class="form-control" formControlName="startDate" placeholder="yyyy-mm-dd" name="startDate" ngbDatepicker #d="ngbDatepicker">
           <div class="input-group-append">
             <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
               <fa-icon [icon]="faCalendar"></fa-icon>
@@ -46,6 +74,11 @@
                class="form-control" placeholder="https://mylocations/mylocation.jpg">
       </div>
       <div class="form-group">
+        <label for="ticketPrice">Ticket Price</label>
+        <input id="ticketPrice" type="number" formControlName="ticketPrice"
+               class="form-control" value="0" >
+      </div>
+      <div class="form-group">
         <div class="row">
           <div class="col-4">
             <label for="locationImageUrl">Min attendees</label>
@@ -58,6 +91,9 @@
                    class="form-control" min="1" max="10000000">
 
             <input forControlName="attendees" type="hidden" />
+            <input forControlName="photos" type="hidden" />
+            <input forControlName="reviews" type="hidden" />
+            <input forControlName="comments" type="hidden" />
           </div>
         </div>
       </div>

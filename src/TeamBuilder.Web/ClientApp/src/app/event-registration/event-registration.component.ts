@@ -13,6 +13,8 @@ export class EventRegistrationComponent implements OnInit {
   teamEvent = <EventRegistration> {};
   eventForm = this.formBuilder.group({
     name: new FormControl(this.teamEvent.name, [Validators.required, Validators.minLength(3)]),
+    categories: new FormControl(this.teamEvent.categories, [Validators.required, Validators.minLength(3)]),
+    description:'',
     location: '',
     startDate: '',
     startTime: '',
@@ -20,7 +22,13 @@ export class EventRegistrationComponent implements OnInit {
     locationImageUrl: '',
     minAttendees: '',
     maxAttendees: '',
-    attendees: ''
+    attendees: '',
+    ticketPrice: '',
+    locationMapUrl: '',
+    reviews: '',
+    photos: '',
+    comments: '',
+    status: ''
   });
 
   faCheck = faCheck;
@@ -29,6 +37,7 @@ export class EventRegistrationComponent implements OnInit {
   faBackward = faBackward;
 
   get name() { return this.eventForm.get('name'); }
+  get categories() { return this.eventForm.get('categories'); }
 
   constructor(
     private http: HttpClient,
@@ -48,6 +57,7 @@ export class EventRegistrationComponent implements OnInit {
             this.eventForm.setValue({
               name: this.teamEvent.name,
               location: this.teamEvent.location,
+              description: this.teamEvent.description,
               startDate: new Date(this.teamEvent.startDate),
               startTime: {
                 hour: new Date(this.teamEvent.startDate).getHours(),
@@ -57,7 +67,14 @@ export class EventRegistrationComponent implements OnInit {
               maxAttendees: this.teamEvent.maxAttendees,
               logoImageUrl: this.teamEvent.logoImageUrl,
               locationImageUrl: this.teamEvent.locationImageUrl,
-              attendees: this.teamEvent.attendees
+              attendees: this.teamEvent.attendees,
+              photos: this.teamEvent.photos,
+              categories: this.teamEvent.categories,
+              reviews: this.teamEvent.reviews,
+              ticketPrice: this.teamEvent.ticketPrice,
+              comments: this.teamEvent.comments,
+              locationMapUrl: this.teamEvent.locationMapUrl,
+              status: this.teamEvent.status
             }); 
           }
         });
@@ -97,4 +114,12 @@ interface EventRegistration {
   minAttendees: number;
   maxAttendees: number;
   attendees: string;
+  photos: string;
+  comments: string;
+  reviews: string;
+  categories: string;
+  ticketPrice: number;
+  description: string;
+  locationMapUrl: string;
+  status: string;
 }
