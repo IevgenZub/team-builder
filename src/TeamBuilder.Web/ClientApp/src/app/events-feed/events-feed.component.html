@@ -4,42 +4,56 @@
   <div class="col-12">
     <h4>{{ teamEvent.name }}</h4>
   </div>
-  <div class="col-3">
-    <img style="width:230px; height:200px;" src="{{ teamEvent.logoImageUrl }}" />
+  <div class="col-2">
+    <img style="width:170px; height:150px;" src="{{ teamEvent.logoImageUrl }}" />
   </div>
-  <div class="col-3">
-    <b>Start date</b>
-    <p>{{ teamEvent.startDate | date: 'short' }}</p>
-    <b>Create date</b>
-    <p>{{ teamEvent.createDate | date: 'short' }}</p>
-  </div>
-  <div class="col-3">
-    <b>Created by</b>
-    <p>{{ teamEvent.owner }}</p>
-    <b>Location</b>
-    <p>{{ teamEvent.location }}</p>
-  </div>
-  <div class="col-3 text-center">
-    <span [hidden]="!isAuthenticated">
-      <button class="btn btn-primary"
-              [hidden]="teamEvent.attendees.includes(userName)"
-              (click)="attend(teamEvent.id)">
-        <fa-icon style="color:lightgreen" [icon]="faPlus"></fa-icon>
-        Attend
-      </button>
-      <button class="btn btn-secondary"
-              [hidden]="!teamEvent.attendees.includes(userName)"
-              (click)="discard(teamEvent.id)">
-        <fa-icon style="color:red" [icon]="faMinus"></fa-icon>
-        Discard 
-      </button>
-    </span>
-    <div class="col text-center">
-      <span [hidden]="isAuthenticated" class="badge badge-info">Login to attend</span>
-      <span class="badge badge-light">{{ teamEvent.attendees.split("email").length - 1 }}/{{ teamEvent.maxAttendees }}</span>
+  <div class="col-10">
+    <div class="row">
+      <div class="col-2">
+        <b>Start date</b>
+        <p>{{ teamEvent.startDate | date: 'short' }}</p>
+      </div>
+      <div class="col-2">
+        <b>Create date</b>
+        <p>{{ teamEvent.createDate | date: 'short' }}</p>
+      </div>
+      <div class="col-2">
+        <b>Location</b>
+        <p>{{ teamEvent.location }}</p>
+      </div>
+      <div class="col-2">
+        <b>Status</b>
+        <p>{{ teamEvent.status }}</p>
+      </div>
+      <div class="col-2 text-right">
+        <b>Ticket Price</b>
+        <p>{{ teamEvent.ticketPrice }}</p>
+      </div>
+      <div class="col-2 text-center">
+        <span [hidden]="!isAuthenticated">
+          <button class="btn btn-primary"
+                  [hidden]="teamEvent.attendees.includes(userName)"
+                  (click)="attend(teamEvent.id)">
+            <fa-icon style="color:lightgreen" [icon]="faPlus"></fa-icon>
+            Attend
+          </button>
+          <button class="btn btn-secondary"
+                  [hidden]="!teamEvent.attendees.includes(userName)"
+                  (click)="discard(teamEvent.id)">
+            <fa-icon style="color:red" [icon]="faMinus"></fa-icon>
+            Discard
+          </button>
+        </span>
+        <div class="col text-center">
+          <span [hidden]="isAuthenticated" class="badge badge-info">Login to attend</span>
+          <span class="badge badge-light">{{ teamEvent.attendees.split("email").length - 1 }}/{{ teamEvent.maxAttendees }}</span>
+        </div>
+      </div>
+      <div class="col-2">
+        <b>Categories</b>
+        &nbsp;
+        <p class="badge badge-secondary">{{ teamEvent.categories }}</p>
+      </div>
     </div>
-  </div>
-  <div class="col-12">
-    &nbsp;
   </div>
 </div>

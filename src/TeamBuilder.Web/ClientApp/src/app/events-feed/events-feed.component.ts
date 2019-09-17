@@ -44,6 +44,9 @@ export class EventsFeedComponent implements OnInit{
         var updateRequest = {
           name: teamEvent.name,
           location: teamEvent.location,
+          description: teamEvent.description,
+          ticketPrice: teamEvent.ticketPrice,
+          locationMapUrl: teamEvent.locationMapUrl,
           startDate: new Date(teamEvent.startDate),
           startTime: {
             hour: new Date(teamEvent.startDate).getHours(),
@@ -53,7 +56,11 @@ export class EventsFeedComponent implements OnInit{
           maxAttendees: teamEvent.maxAttendees,
           locationImageUrl: teamEvent.locationImageUrl,
           logoImageUrl: teamEvent.logoImageUrl,
-          attendees: JSON.stringify(attendees)
+          attendees: JSON.stringify(attendees),
+          categories: teamEvent.categories,
+          photos: teamEvent.photos,
+          comments: teamEvent.comments,
+          reviews: teamEvent.reviews
         }
 
         this.http.put(this.baseUrl + 'api/teamevents/' + id, updateRequest).subscribe(
@@ -79,6 +86,9 @@ export class EventsFeedComponent implements OnInit{
       var updateRequest = {
         name: teamEvent.name,
         location: teamEvent.location,
+        description: teamEvent.description,
+        ticketPrice: teamEvent.ticketPrice,
+        locationMapUrl: teamEvent.locationMapUrl,
         startDate: new Date(teamEvent.startDate),
         startTime: {
           hour: new Date(teamEvent.startDate).getHours(),
@@ -88,7 +98,11 @@ export class EventsFeedComponent implements OnInit{
         maxAttendees: teamEvent.maxAttendees,
         locationImageUrl: teamEvent.locationImageUrl,
         logoImageUrl: teamEvent.logoImageUrl,
-        attendees: JSON.stringify(attendees)
+        attendees: JSON.stringify(attendees),
+        categories: teamEvent.categories,
+        photos: teamEvent.photos,
+        comments: teamEvent.comments,
+        reviews:teamEvent.reviews
       }
 
       this.http.put(this.baseUrl + 'api/teamevents/' + id, updateRequest).subscribe(
