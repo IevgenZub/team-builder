@@ -2,58 +2,60 @@
 <div [hidden]=teamEvents class="text-center"><p>Loading...</p></div>
 <div class="row" *ngFor="let teamEvent of teamEvents">
   <div class="col-12">
-    <h4>{{ teamEvent.name }}</h4>
+    <h5>{{ teamEvent.name }}</h5>
   </div>
-  <div class="col-2">
-    <img style="width:170px; height:150px;" src="{{ teamEvent.logoImageUrl }}" />
+  <div class="col-md-2 col-4">
+    <img style="width:150px; height:120px;" src="{{ teamEvent.logoImageUrl }}" />
+    <br />
+    <br />
   </div>
-  <div class="col-10">
+  <div class="col-md-8 col-8 small">
     <div class="row">
-      <div class="col-2">
+      <div class="col-md-3 col-6">
         <b>Start date</b>
         <p>{{ teamEvent.startDate | date: 'short' }}</p>
       </div>
-      <div class="col-2">
-        <b>Create date</b>
-        <p>{{ teamEvent.createDate | date: 'short' }}</p>
-      </div>
-      <div class="col-2">
+      <div class="col-md-3 col-6">
         <b>Location</b>
         <p>{{ teamEvent.location }}</p>
       </div>
-      <div class="col-2">
+      <div class="col-md-3 col-6">
         <b>Status</b>
         <p>{{ teamEvent.status }}</p>
       </div>
-      <div class="col-2 text-right">
+      <div class="col-md-3 col-6">
+        <b>Categories</b>
+        <br />
+        <p class="badge badge-secondary">{{ teamEvent.categories }}</p>
+      </div>
+      <div class="col-md-3 col-6">
         <b>Ticket Price</b>
         <p>{{ teamEvent.ticketPrice }}</p>
       </div>
-      <div class="col-2 text-center">
-        <span [hidden]="!isAuthenticated">
-          <button class="btn btn-primary"
-                  [hidden]="teamEvent.attendees.includes(userName)"
-                  (click)="attend(teamEvent.id)">
-            <fa-icon style="color:lightgreen" [icon]="faPlus"></fa-icon>
-            Attend
-          </button>
-          <button class="btn btn-secondary"
-                  [hidden]="!teamEvent.attendees.includes(userName)"
-                  (click)="discard(teamEvent.id)">
-            <fa-icon style="color:red" [icon]="faMinus"></fa-icon>
-            Discard
-          </button>
-        </span>
-        <div class="col text-center">
-          <span [hidden]="isAuthenticated" class="badge badge-info">Login to attend</span>
-          <span class="badge badge-light">{{ teamEvent.attendees.split("email").length - 1 }}/{{ teamEvent.maxAttendees }}</span>
-        </div>
+      <div class="col-md-3 col-6">
+        <b>Participants</b>
+        <br />
+        <p class="badge badge-light">{{ teamEvent.attendees.split("email").length - 1 }}/{{ teamEvent.maxAttendees }}</p>
       </div>
-      <div class="col-2">
-        <b>Categories</b>
-        &nbsp;
-        <p class="badge badge-secondary">{{ teamEvent.categories }}</p>
-      </div>
+    </div>
+  </div>
+  <div class="col-md-2 col-12 text-center">
+    <span [hidden]="!isAuthenticated">
+      <button class="btn btn-primary"
+              [hidden]="teamEvent.attendees.includes(userName)"
+              (click)="attend(teamEvent.id)">
+        <fa-icon style="color:lightgreen" [icon]="faPlus"></fa-icon>
+        Attend
+      </button>
+      <button class="btn btn-secondary"
+              [hidden]="!teamEvent.attendees.includes(userName)"
+              (click)="discard(teamEvent.id)">
+        <fa-icon style="color:red" [icon]="faMinus"></fa-icon>
+        Discard
+      </button>
+    </span>
+    <div class="col">
+      <span [hidden]="isAuthenticated" class="badge badge-info">Login to attend</span>
     </div>
   </div>
 </div>
