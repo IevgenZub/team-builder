@@ -2,14 +2,12 @@
 <div [hidden]=teamEvents class="text-center"><p>Loading...</p></div>
 <div class="row" *ngFor="let teamEvent of teamEvents">
   <div class="col-12">
-    <h5>{{ teamEvent.name }}</h5>
+    <h4>{{ teamEvent.name }}</h4>
   </div>
   <div class="col-md-2 col-4">
     <img style="width:150px; height:120px;" src="{{ teamEvent.logoImageUrl }}" />
-    <br />
-    <br />
   </div>
-  <div class="col-md-8 col-8 small">
+  <div class="col-md-8 col-8">
     <div class="row">
       <div class="col-md-3 col-6">
         <b>Start date</b>
