@@ -3,38 +3,38 @@
   <div class="col-12">
     <h1>{{teamEvent.name}}</h1>
   </div>
-  <div class="col-md-4 col-4">
+  <div class="col-md-4 col-12">
     <img style="width:22rem; height:15rem; margin-bottom:10px;" src="{{ teamEvent.logoImageUrl }}" />
   </div>
-  <div class="col-md-6 col-8">
+  <div class="col-md-6 col-12">
     <div class="row">
-      <div class="col-md-4 col-6">
+      <div class="col-4">
         <b>Start date</b>
         <p>{{ teamEvent.startDate | date: 'short' }}</p>
       </div>
-      <div class="col-md-4 col-6">
+      <div class="col-4">
         <b>Location</b>
         <p>{{ teamEvent.location }}</p>
       </div>
-      <div class="col-md-4 col-6">
+      <div class="col-4">
         <b>Status</b>
         <p>{{ teamEvent.status }}</p>
       </div>
-      <div class="col-md-4 col-6">
+      <div class="col-4">
         <b>Categories</b>
         <br />
         <p class="badge badge-secondary">{{ teamEvent.categories }}</p>
       </div>
-      <div class="col-md-4 col-6">
+      <div class="col-4">
         <b>Ticket Price</b>
         <p>{{ teamEvent.ticketPrice }} ₴</p>
       </div>
-      <div class="col-md-4 col-6">
+      <div class="col-4">
         <b>Participants</b>
         <br />
         <p class="badge badge-light">{{ teamEvent.attendees.split("email").length - 1 }}/{{ teamEvent.maxAttendees }}</p>
       </div>
-      <div class="col-md-4 col-6">
+      <div class="col-4">
         <b>Created by</b>
         <br />
         <p>{{ teamEvent.owner }}</p>
@@ -56,9 +56,7 @@
         Discard
       </button>
     </span>
-    <div class="col">
-      <span [hidden]="isAuthenticated" class="badge badge-info">Login to attend</span>
-    </div>
+    <span [hidden]="isAuthenticated" class="badge badge-info">Login to attend</span> 
   </div>
   <div class="col-12">
     <p>{{ teamEvent.description }}</p>
