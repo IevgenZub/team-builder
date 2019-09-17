@@ -18,6 +18,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { EventsGridComponent } from './events-grid/events-grid.component';
 import { EventsFeedComponent } from './events-feed/events-feed.component';
 import { ActionCellLinkRendererComponent } from './action-cell-renderer/action-cell-renderer.component';
+import { EventDetailsComponent } from './event-details/event-details.component';
 
 
 @NgModule({
@@ -28,7 +29,8 @@ import { ActionCellLinkRendererComponent } from './action-cell-renderer/action-c
     EventRegistrationComponent,
     EventsGridComponent,
     EventsFeedComponent,
-    ActionCellLinkRendererComponent
+    ActionCellLinkRendererComponent,
+    EventDetailsComponent
   ],
   imports: [
     NgbModule,
@@ -42,7 +44,8 @@ import { ActionCellLinkRendererComponent } from './action-cell-renderer/action-c
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'events-grid', component: EventsGridComponent, canActivate: [AuthorizeGuard] },
-      { path: 'register-event', component: EventRegistrationComponent, canActivate: [AuthorizeGuard] }
+      { path: 'register-event', component: EventRegistrationComponent, canActivate: [AuthorizeGuard] },
+      { path: 'event-details/:id', component: EventDetailsComponent}
     ])
   ],
   providers: [

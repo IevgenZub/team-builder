@@ -1,0 +1,66 @@
+<p [hidden]="teamEvent">Loading..</p>
+<div class="row" *ngIf="teamEvent">
+  <div class="col-12">
+    <h1>{{teamEvent.name}}</h1>
+  </div>
+  <div class="col-md-4 col-4">
+    <img style="width:22rem; height:15rem; margin-bottom:10px;" src="{{ teamEvent.logoImageUrl }}" />
+  </div>
+  <div class="col-md-6 col-8">
+    <div class="row">
+      <div class="col-md-4 col-6">
+        <b>Start date</b>
+        <p>{{ teamEvent.startDate | date: 'short' }}</p>
+      </div>
+      <div class="col-md-4 col-6">
+        <b>Location</b>
+        <p>{{ teamEvent.location }}</p>
+      </div>
+      <div class="col-md-4 col-6">
+        <b>Status</b>
+        <p>{{ teamEvent.status }}</p>
+      </div>
+      <div class="col-md-4 col-6">
+        <b>Categories</b>
+        <br />
+        <p class="badge badge-secondary">{{ teamEvent.categories }}</p>
+      </div>
+      <div class="col-md-4 col-6">
+        <b>Ticket Price</b>
+        <p>{{ teamEvent.ticketPrice }} ₴</p>
+      </div>
+      <div class="col-md-4 col-6">
+        <b>Participants</b>
+        <br />
+        <p class="badge badge-light">{{ teamEvent.attendees.split("email").length - 1 }}/{{ teamEvent.maxAttendees }}</p>
+      </div>
+      <div class="col-md-4 col-6">
+        <b>Created by</b>
+        <br />
+        <p>{{ teamEvent.owner }}</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-2 col-12 text-center">
+    <span [hidden]="!isAuthenticated">
+      <button class="btn btn-primary"
+              [hidden]="teamEvent.attendees.includes(userName)"
+              (click)="attend(teamEvent.id)">
+        <fa-icon style="color:lightgreen" [icon]="faPlus"></fa-icon>
+        Attend
+      </button>
+      <button class="btn btn-secondary"
+              [hidden]="!teamEvent.attendees.includes(userName)"
+              (click)="discard(teamEvent.id)">
+        <fa-icon style="color:red" [icon]="faMinus"></fa-icon>
+        Discard
+      </button>
+    </span>
+    <div class="col">
+      <span [hidden]="isAuthenticated" class="badge badge-info">Login to attend</span>
+    </div>
+  </div>
+  <div class="col-12">
+    <p>{{ teamEvent.description }}</p>
+  </div>
+</div>
