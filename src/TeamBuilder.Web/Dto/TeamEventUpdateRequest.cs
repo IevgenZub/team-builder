@@ -12,6 +12,7 @@ namespace TeamBuilder.Web.Dto
         public string LocationMapUrl { get; set; }
         public decimal TicketPrice { get; set; }
         public string Description { get; set; }
+        public string Status { get; set; }
         public string StartDate { get; set; }
         public dynamic StartTime { get; set; }
         public int? MinAttendees { get; set; }

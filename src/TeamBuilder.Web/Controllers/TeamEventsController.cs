@@ -95,6 +95,7 @@ namespace TeamBuilder.Web.Controllers
             teamEvent.LocationMapUrl= request.LocationMapUrl;
             teamEvent.Description = request.Description;
             teamEvent.TicketPrice = request.TicketPrice;
+            teamEvent.Status = request.Status;
 
             try
             {
