@@ -5,6 +5,7 @@ import { AuthorizeService } from '../../api-authorization/authorize.service';
 import { map, switchMap } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-event-details',
@@ -18,12 +19,17 @@ export class EventDetailsComponent implements OnInit {
   teamEvent: any;
   faPlus = faPlus;
   faMinus = faMinus;
+  comment = <Comment> {};
+  commentForm = this.formBuilder.group({
+    text: new FormControl(this.comment.text, [Validators.required, Validators.minLength(3)])
+  });
 
   constructor(
     private http: HttpClient,
     @Inject('BASE_URL') private baseUrl: string,
     private authorizeService: AuthorizeService,
-    private route: ActivatedRoute) { }
+    private route: ActivatedRoute,
+    private formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
     const id: Observable<string> = this.route.params.pipe(map(p => p.id));
@@ -129,4 +135,8 @@ export class EventDetailsComponent implements OnInit {
       error => console.error(error)
     );
   }
+}
+
+interface Comment {
+  text: string
 }

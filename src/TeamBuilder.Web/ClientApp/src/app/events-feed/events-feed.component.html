@@ -5,7 +5,7 @@
   <img src="{{ teamEvent.logoImageUrl }}" class="mr-3"  style="width:18rem; height:13rem; margin-bottom:10px">
   <div class="media-body">
     <h5 class="mt-0">{{ teamEvent.name }}</h5>
-    <p>{{ teamEvent.description }}</p>
-    <a  [routerLink]="['/event-details', teamEvent.id]" class="btn btn-primary stretched-link">Details</a>
+    <div [innerHTML]="teamEvent.description" style="margin-bottom:10px;"></div>
+    <a [routerLink]="['/event-details', teamEvent.id]" class="btn btn-primary stretched-link">Details</a>
   </div>
 </div>
