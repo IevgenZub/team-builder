@@ -12,6 +12,7 @@ import { Observable } from 'rxjs';
   styleUrls: ['./event-details.component.css']
 })
 export class EventDetailsComponent implements OnInit {
+  id: string;
   userName: string;
   isAuthenticated: boolean;
   teamEvent: any;
@@ -29,6 +30,7 @@ export class EventDetailsComponent implements OnInit {
     this.authorizeService.isAuthenticated().subscribe(result => this.isAuthenticated = result);
     this.authorizeService.getUser().pipe(map(u => u && u.name)).subscribe(user => {
       id.subscribe(result => {
+        this.id = result;
         this.userName = user;
         this.http.get(this.baseUrl + 'api/teamevents/' + result).subscribe(
           data => this.teamEvent = data,
@@ -116,5 +118,15 @@ export class EventDetailsComponent implements OnInit {
         error => console.error(error)
       );
     }
+  }
+
+  onSubmitComment(eventData) {
+
+    // TODO: Add service TeamEventService call to send comment
+
+    this.http.put(this.baseUrl + 'api/teamevents/' + this.id, eventData).subscribe(
+      () => console.warn(eventData),
+      error => console.error(error)
+    );
   }
 }
