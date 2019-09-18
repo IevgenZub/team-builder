@@ -45,13 +45,13 @@
     <span [hidden]="!isAuthenticated">
       <button class="btn btn-primary"
               [hidden]="teamEvent.attendees.includes(userName)"
-              (click)="attend(teamEvent.id)">
+              (click)="attend()">
         <fa-icon style="color:lightgreen" [icon]="faPlus"></fa-icon>
         Attend
       </button>
       <button class="btn btn-secondary"
               [hidden]="!teamEvent.attendees.includes(userName)"
-              (click)="discard(teamEvent.id)">
+              (click)="discard()">
         <fa-icon style="color:red" [icon]="faMinus"></fa-icon>
         Discard
       </button>
@@ -60,19 +60,30 @@
     <ngb-rating></ngb-rating>
     <span [hidden]="isAuthenticated" class="badge badge-info">Login to attend</span>
   </div>
-  <div class="col-12" [innerHTML]="teamEvent.description" >
+  <div class="col-12" [innerHTML]="teamEvent.description">
   </div>
   <div class="col-12">
     &nbsp;
   </div>
   <div class="col-12">
+    <hr>
+  </div>
+  <div class="col-12">
     <form [formGroup]="commentForm" (ngSubmit)="onSubmitComment(commentForm.value)">
       <div class="form-group">
-        <textarea rows="2" formControlName="text"  placeholder="Add a public comment...." class="form-control" id="comment"></textarea>
+        <textarea rows="2" formControlName="text" placeholder="Add a public comment...." class="form-control" id="comment"></textarea>
       </div>
       <div class="form-group text-right">
         <button class="btn btn-light" type="submit">Comment</button>
       </div>
     </form>
+  </div>
+  <div class="col-12">
+    <h6>{{ comments.length }} Comments</h6>
+    <p *ngFor="let comment of comments">
+      <b>{{ comment.user }} </b> {{ comment.date | date: 'short'}}
+      <br />
+      {{ comment.text }}
+    </p>
   </div>
 </div>

@@ -46,7 +46,7 @@ export class EventRegistrationComponent implements OnInit {
     private formBuilder: FormBuilder,
     private activatedRouter: ActivatedRoute,
     private router: Router,
-    private location: Location) {}
+    private location: Location) { }
 
   ngOnInit() {
     this.activatedRouter.queryParams.subscribe(params => {
