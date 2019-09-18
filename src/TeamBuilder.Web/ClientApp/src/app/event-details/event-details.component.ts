@@ -74,7 +74,8 @@ export class EventDetailsComponent implements OnInit {
           categories: teamEvent.categories,
           photos: teamEvent.photos,
           comments: teamEvent.comments,
-          reviews: teamEvent.reviews
+          reviews: teamEvent.reviews,
+          status: teamEvent.status
         }
 
         this.http.put(this.baseUrl + 'api/teamevents/' + id, updateRequest).subscribe(
@@ -116,7 +117,8 @@ export class EventDetailsComponent implements OnInit {
         categories: teamEvent.categories,
         photos: teamEvent.photos,
         comments: teamEvent.comments,
-        reviews: teamEvent.reviews
+        reviews: teamEvent.reviews,
+        status: teamEvent.status
       }
 
       this.http.put(this.baseUrl + 'api/teamevents/' + id, updateRequest).subscribe(
