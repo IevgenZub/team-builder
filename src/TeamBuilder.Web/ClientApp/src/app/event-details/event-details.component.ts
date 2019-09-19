@@ -6,6 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { EventService } from '../event.service';
+import * as signalR from "@aspnet/signalr";
 
 @Component({
   selector: 'app-event-details',
@@ -24,12 +25,25 @@ export class EventDetailsComponent implements OnInit {
   commentForm = this.formBuilder.group({
     text: new FormControl(this.comment.text, [Validators.required, Validators.minLength(3)])
   });
+  connection: signalR.HubConnection;
 
   constructor(
     private authorizeService: AuthorizeService,
     private route: ActivatedRoute,
     private formBuilder: FormBuilder,
-    private eventService: EventService) { }
+    private eventService: EventService) {
+
+    this.connection = new signalR.HubConnectionBuilder()
+      .withUrl("/teamEventsHub")
+      .build();
+
+    this.connection.on("messageReceived", (username: string, message: string) => {
+      console.warn(username);
+      console.warn(message);
+    });
+
+    this.connection.start().catch(err => document.write(err));
+  }
 
   ngOnInit(): void {
     const id: Observable<string> = this.route.params.pipe(map(p => p.id));
@@ -52,6 +66,7 @@ export class EventDetailsComponent implements OnInit {
 
   attend() {
     if (this.isAuthenticated) {
+      this.connection.send("newMessage", this.userName, "Hey!");
       this.eventService.attend(this.teamEvent, this.userName).subscribe(
         result => console.warn(result),
         error => console.error(error)
