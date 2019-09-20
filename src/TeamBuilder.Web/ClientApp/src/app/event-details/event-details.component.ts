@@ -37,9 +37,8 @@ export class EventDetailsComponent implements OnInit {
       .withUrl("/teamEventsHub")
       .build();
 
-    this.connection.on("messageReceived", (username: string, message: string) => {
-      console.warn(username);
-      console.warn(message);
+    this.connection.on("commentReceived", (username: string, message: string) => {
+      this.comments.push({ user: username, text: message, date: new Date() })
     });
 
     this.connection.start().catch(err => document.write(err));
@@ -66,7 +65,6 @@ export class EventDetailsComponent implements OnInit {
 
   attend() {
     if (this.isAuthenticated) {
-      this.connection.send("newMessage", this.userName, "Hey!");
       this.eventService.attend(this.teamEvent, this.userName).subscribe(
         result => console.warn(result),
         error => console.error(error)
@@ -85,10 +83,8 @@ export class EventDetailsComponent implements OnInit {
 
   onSubmitComment(eventData) {
     if (this.isAuthenticated) {
-      this.eventService.addComment(this.teamEvent, eventData.text, this.userName).subscribe(
-        () => this.comments.push({user: this.userName, text: eventData.text, date: new Date()}),
-        error => console.error(error)
-      )
+      this.connection.send("newComment", this.id, this.userName, eventData.text);
+      this.commentForm.reset();
     }
   }
 }
