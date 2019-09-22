@@ -28,6 +28,7 @@ export class EventDetailsComponent implements OnInit {
   faArrowUp = faArrowUp;
   comment = <Comment>{};
   comments = [];
+  attendees = [];
   commentForm = this.formBuilder.group({
     text: new FormControl(this.comment.text, [Validators.required, Validators.minLength(3)])
   });
@@ -63,6 +64,9 @@ export class EventDetailsComponent implements OnInit {
             if (this.teamEvent.comments) {
               this.comments = JSON.parse(this.teamEvent.comments);
             }
+            if (this.teamEvent.attendees) {
+              this.attendees = JSON.parse(this.teamEvent.attendees);
+            }
           },
           error => console.error(error))
       });
@@ -72,7 +76,11 @@ export class EventDetailsComponent implements OnInit {
   attend() {
     if (this.isAuthenticated) {
       this.eventService.attend(this.teamEvent, this.userName).subscribe(
-        result => console.warn(result),
+        () => {
+          if (this.teamEvent.attendees) {
+            this.attendees = JSON.parse(this.teamEvent.attendees);
+          }
+        },
         error => console.error(error)
       )
     }
@@ -81,7 +89,11 @@ export class EventDetailsComponent implements OnInit {
   discard() {
     if (this.isAuthenticated) {
       this.eventService.discard(this.teamEvent, this.userName).subscribe(
-        result => console.warn(result),
+        () => {
+          if (this.teamEvent.attendees) {
+            this.attendees = JSON.parse(this.teamEvent.attendees);
+          }
+        },
         error => console.error(error)
       )
     }
