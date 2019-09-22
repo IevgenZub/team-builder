@@ -39,6 +39,13 @@
         <br />
         <p>{{ teamEvent.owner }}</p>
       </div>
+      <div class="col-12">
+        <b>Participants</b>
+        <br />
+        <span *ngFor="let attendee of attendees">
+          {{ attendee.email }}
+        </span>
+      </div>
     </div>
   </div>
   <div class="col-md-2 col-12 text-center">
@@ -60,14 +67,8 @@
     <ngb-rating></ngb-rating>
     <span [hidden]="isAuthenticated" class="badge badge-info">Login to attend</span>
   </div>
+  
   <div class="col-12" [innerHTML]="teamEvent.description">
-  </div>
-  <div class="col-12">
-    <br />
-    <h3>Participants</h3>
-    <span *ngFor="let attendee of attendees">
-        {{ attendee.email }} &nbsp;
-    </span>
   </div>
   <div class="col-12">
       <hr>
