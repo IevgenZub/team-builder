@@ -84,14 +84,24 @@
   </div>
   <div class="col-12">
     <h6>{{ comments.length }} Comments</h6>
-    <div *ngFor="let comment of comments">
-      <b>{{ comment.user }} </b> {{ comment.date | date: 'short'}}
-      <br />
-      {{ comment.text }}
-      <div class="text-right">
-        <button class="btn btn-sm btn-light"><fa-icon [icon]="faThumbsUp"></fa-icon></button>
-        &nbsp;
-        <button class="btn btn-sm btn-light"><fa-icon [icon]="faThumbsDown"></fa-icon></button>
+    <div class="row" *ngFor="let comment of comments">
+      <div class="col-12">
+        <b>{{ comment.user }} </b> {{ comment.date | date: 'short'}}
+      </div>
+      <div class="col-12">
+        <p>{{ comment.text }}</p>
+      </div>
+      <div class="col-12">
+        <p>
+          <button class="btn btn-sm btn-light"><fa-icon style="color:gray" [icon]="faThumbsUp"></fa-icon></button>
+          &nbsp;
+          <button class="btn btn-sm btn-light"><fa-icon style="color:gray" [icon]="faThumbsDown"></fa-icon></button>
+          &nbsp;
+          <button class="btn btn-sm btn-light">REPLY</button>
+        </p>
+      </div>
+      <div class="col-12">
+        <p><button class="btn btn-sm btn-link" style="color:black"><b>View reply </b><fa-icon [icon]="faArrowDown"></fa-icon></button></p>
       </div>
     </div>
   </div>

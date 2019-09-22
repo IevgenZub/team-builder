@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { faPlus, faMinus, faThumbsUp, faThumbsDown, faPaperclip, faSmile } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faMinus, faThumbsUp, faThumbsDown, faPaperclip, faSmile, faArrowDown, faArrowUp } from '@fortawesome/free-solid-svg-icons';
 import { AuthorizeService } from '../../api-authorization/authorize.service';
 import { map} from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
@@ -23,7 +23,9 @@ export class EventDetailsComponent implements OnInit {
   faThumbsUp = faThumbsUp;
   faThumbsDown = faThumbsDown;
   faPaperclip = faPaperclip;
-  faSmile = faSmile ;
+  faSmile = faSmile;
+  faArrowDown = faArrowDown;
+  faArrowUp = faArrowUp;
   comment = <Comment>{};
   comments = [];
   commentForm = this.formBuilder.group({
