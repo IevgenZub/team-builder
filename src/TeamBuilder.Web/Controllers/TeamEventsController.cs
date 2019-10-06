@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Azure.CognitiveServices.Language.TextAnalytics;
 using Microsoft.EntityFrameworkCore;
 using TeamBuilder.Web.Data;
 using TeamBuilder.Web.Dto;
@@ -18,6 +19,9 @@ namespace TeamBuilder.Web.Controllers
     [ApiController]
     public class TeamEventsController : ControllerBase
     {
+        private const string Key = "ced608eaa18b4bd195cd895dce0ec44c";
+        private const string Endpoint = "https://team-builder-text-analytics.cognitiveservices.azure.com/";
+        
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
 
@@ -97,6 +101,10 @@ namespace TeamBuilder.Web.Controllers
             teamEvent.TicketPrice = request.TicketPrice;
             teamEvent.Status = request.Status;
 
+            var credentials = new ApiKeyServiceClientCredentials(Key);
+            var client = new TextAnalyticsClient(credentials) { Endpoint = Endpoint };
+            teamEvent.Reviews = client.Sentiment(teamEvent.Description, "en").Score.ToString();
+
             try
             {
                 await _context.SaveChangesAsync();
@@ -154,6 +162,10 @@ namespace TeamBuilder.Web.Controllers
                 Comments = "[]",
                 Reviews = "[]"
             };
+
+            var credentials = new ApiKeyServiceClientCredentials(Key);
+            var client = new TextAnalyticsClient(credentials) { Endpoint = Endpoint };
+            teamEvent.Reviews = client.Sentiment(teamEvent.Description, "en").Score.ToString();
 
             _context.TeamEvents.Add(teamEvent);
             await _context.SaveChangesAsync();
