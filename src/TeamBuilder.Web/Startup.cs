@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using TeamBuilder.Web.Hubs;
+using TeamBuilder.Web.Services;
 
 namespace TeamBuilder.Web
 {
@@ -34,6 +35,7 @@ namespace TeamBuilder.Web
             services.AddIdentityServer()
                 .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
 
+            services.AddTransient<ITextAnalyticsService, TextAnalyticsService>();
             services.AddAuthentication()
                 .AddIdentityServerJwt();
             services.AddControllersWithViews();

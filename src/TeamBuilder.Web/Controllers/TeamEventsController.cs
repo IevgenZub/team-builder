@@ -12,23 +12,26 @@ using Microsoft.EntityFrameworkCore;
 using TeamBuilder.Web.Data;
 using TeamBuilder.Web.Dto;
 using TeamBuilder.Web.Models;
+using TeamBuilder.Web.Services;
 
 namespace TeamBuilder.Web.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class TeamEventsController : ControllerBase
-    {
-        private const string Key = "ced608eaa18b4bd195cd895dce0ec44c";
-        private const string Endpoint = "https://team-builder-text-analytics.cognitiveservices.azure.com/";
-        
+    {   
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly ITextAnalyticsService _textAnalyticsService;
 
-        public TeamEventsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public TeamEventsController(
+            ApplicationDbContext context, 
+            UserManager<ApplicationUser> userManager,
+            ITextAnalyticsService textAnalyticsService)
         {
             _context = context;
             _userManager = userManager;
+            _textAnalyticsService = textAnalyticsService;
         }
 
         // GET: api/TeamEvents
@@ -101,10 +104,8 @@ namespace TeamBuilder.Web.Controllers
             teamEvent.TicketPrice = request.TicketPrice;
             teamEvent.Status = request.Status;
 
-            var credentials = new ApiKeyServiceClientCredentials(Key);
-            var client = new TextAnalyticsClient(credentials) { Endpoint = Endpoint };
-            teamEvent.Reviews = client.Sentiment(teamEvent.Description, "en").Score.ToString();
-
+            teamEvent.Description = await _textAnalyticsService.BuildTextWithLinksAsync(teamEvent.Description);
+                        
             try
             {
                 await _context.SaveChangesAsync();
@@ -162,10 +163,6 @@ namespace TeamBuilder.Web.Controllers
                 Comments = "[]",
                 Reviews = "[]"
             };
-
-            var credentials = new ApiKeyServiceClientCredentials(Key);
-            var client = new TextAnalyticsClient(credentials) { Endpoint = Endpoint };
-            teamEvent.Reviews = client.Sentiment(teamEvent.Description, "en").Score.ToString();
 
             _context.TeamEvents.Add(teamEvent);
             await _context.SaveChangesAsync();
