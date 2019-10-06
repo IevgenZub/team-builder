@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace TeamBuilder.Web.Services
 {
@@ -13,10 +14,15 @@ namespace TeamBuilder.Web.Services
 
         public async Task<string> BuildTextWithLinksAsync(string input)
         {
-            var result = await _client.KeyPhrasesAsync(input, "en");
-            foreach (var keyPhrase in result.KeyPhrases)
+            var result = await _client.EntitiesAsync(input, "en");
+            foreach (var entity in result.Entities)
             {
-                // TODO Add call to google search api https://developers.google.com/api-client-library/dotnet/get_started?hl=uk
+                var httpClient = new HttpClient();
+                var googleResponseRaw = await httpClient.GetStringAsync("https://www.googleapis.com/customsearch/v1?q=" 
+                    + HttpUtility.UrlEncode(entity.Name)
+                    + "&key=AIzaSyAYzZU-9D3UyaCcZO2Wos6NKsG6aTXMGLM&cx=013528689194530833786:sbwqcuqvzet");
+
+                var googleResponse = JsonConvert.DeserializeObject<dynamic>(googleResponseRaw);
             }
 
             return "text with links";
