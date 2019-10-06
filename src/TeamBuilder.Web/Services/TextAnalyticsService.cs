@@ -9,8 +9,6 @@ namespace TeamBuilder.Web.Services
 {
     public class TextAnalyticsService : ITextAnalyticsService
     {
-        private const string GoogleSearchApiKey = "AIzaSyAYzZU-9D3UyaCcZO2Wos6NKsG6aTXMGLM";
-        private const string GoogleCustomSearchEngine = "013528689194530833786:sbwqcuqvzet";
         private const string AzureTextAnalyticsKey = "ced608eaa18b4bd195cd895dce0ec44c";
         private const string AzureTextAnalyticsEndpoint = "https://team-builder-text-analytics.cognitiveservices.azure.com/";
         
@@ -23,12 +21,19 @@ namespace TeamBuilder.Web.Services
             foreach (var entity in result.Entities)
             {
                 var httpClient = new HttpClient();
-                var googleResponseRaw = await httpClient.GetStringAsync("https://www.googleapis.com/customsearch/v1?" 
-                    + $"q={HttpUtility.UrlEncode(entity.Name)}&key={GoogleSearchApiKey}&cx={GoogleCustomSearchEngine}");
+                var wikiResponseRaw = await httpClient.GetStringAsync("https://en.wikipedia.org/w/api.php?action=opensearch&"
+                    + $"search={HttpUtility.UrlEncode(entity.Name)}&limit=1&namespace=0&format=json");
                 
-                var data = (JObject)JsonConvert.DeserializeObject(googleResponseRaw);
-                var link = data.SelectToken("items[0].link").Value<string>();
-                input = input.Replace(entity.Name, $"<a target='_blank' href='{link}'>{entity.Name}</a>");
+                var wikiResponse = (JArray)JsonConvert.DeserializeObject(wikiResponseRaw);
+                if (wikiResponse.Count == 4)
+                {
+                    var links = (JArray)wikiResponse[3];
+                    if (links.Count == 1)
+                    {
+                        var link = ((JArray)wikiResponse[3])[0].Value<string>();
+                        input = input.Replace(entity.Name, $"<a target='_blank' href='{link}'>{entity.Name}</a>");
+                    }
+                }
             }
 
             return input;
