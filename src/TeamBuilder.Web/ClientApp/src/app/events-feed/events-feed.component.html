@@ -1,11 +1,57 @@
 <h2 class="text-center">Events Feed</h2>
 <div [hidden]=teamEvents class="text-center"><p>Loading...</p></div>
-
-<div class="media position-relative" *ngFor="let teamEvent of teamEvents">
-  <img src="{{ teamEvent.logoImageUrl }}" class="mr-3"  style="width:18rem; height:13rem; margin-bottom:10px">
-  <div class="media-body">
-    <h5 class="mt-0">{{ teamEvent.name }}</h5>
-    <div [innerHTML]="teamEvent.description" style="margin-bottom:10px;"></div>
-    <a [routerLink]="['/event-details', teamEvent.id]" class="btn btn-primary stretched-link">Details</a>
+<div class="row">
+  <div class="col-12" *ngFor="let teamEvent of teamEvents">
+    <div class="media position-relative">
+      <img src="{{ teamEvent.logoImageUrl }}" class="mr-3" style="width:18rem; height:13rem; margin-bottom:10px">
+      <div class="media-body">
+        <h5 class="mt-0">{{ teamEvent.name }}</h5>
+        <div class="col-md-12 col-12">
+          <div class="row">
+            <div class="col-4">
+              <b>Start date</b>
+              <p>{{ teamEvent.startDate | date: 'short' }}</p>
+            </div>
+            <div class="col-4">
+              <b>Location</b>
+              <p>{{ teamEvent.location }}</p>
+            </div>
+            <div class="col-4">
+              <b>Status</b>
+              <p>{{ teamEvent.status }}</p>
+            </div>
+            <div class="col-4">
+              <b>Categories</b>
+              <br />
+              <p class="badge badge-secondary">{{ teamEvent.categories }}</p>
+            </div>
+            <div class="col-4">
+              <b>Ticket Price</b>
+              <p>{{ teamEvent.ticketPrice }} ₴</p>
+            </div>
+            <div class="col-4">
+              <b>Participants</b>
+              <br />
+              <p class="badge badge-light">{{ teamEvent.attendees.split("email").length - 1 }}/{{ teamEvent.maxAttendees }}</p>
+            </div>
+            <div class="col-4">
+              <b>Created by</b>
+              <br />
+              <p>{{ teamEvent.owner }}</p>
+            </div>
+            <div class="col-4">
+              <b>Participants</b>
+              <br />
+              <span *ngFor="let attendee of attendees">
+                {{ attendee.email }}
+              </span>
+            </div>
+            <div class="col-4">
+              <a [routerLink]="['/event-details', teamEvent.id]" class="btn btn-primary stretched-link">Details</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

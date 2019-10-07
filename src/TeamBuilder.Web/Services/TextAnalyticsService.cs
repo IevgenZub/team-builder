@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
@@ -23,13 +24,26 @@ namespace TeamBuilder.Web.Services
         public async Task BuildTextWithLinksAsync(TeamEvent teamEvent)
         {
             var input = teamEvent.Description;
-            var result = await _client.EntitiesAsync(input, "en");
+            var entitiesResponse = await _client.EntitiesAsync(input, "en");
+            var keyPhrasesResponse = await _client.KeyPhrasesAsync(input, "en");
+            var words = new SortedSet<string>();
+
+            foreach (var entity in entitiesResponse.Entities)
+            {
+                words.Add(entity.Name);
+            }
+
+            foreach (var keyPhrase in keyPhrasesResponse.KeyPhrases)
+            {
+                words.Add(keyPhrase);
+            }
+
             var photos = new HashSet<dynamic>();
-            foreach (var entity in result.Entities)
+            foreach (var word in words.OrderBy(w => w))
             {
                 using (var httpClient = new HttpClient())
                 {
-                    var encodedEntity = HttpUtility.UrlEncode(entity.Name);
+                    var encodedEntity = HttpUtility.UrlEncode(word);
                     
                     var wikiResponseRaw = await httpClient.GetStringAsync(
                        $"{WikiSearchEndpoint}?action=opensearch&" + 
@@ -47,9 +61,9 @@ namespace TeamBuilder.Web.Services
                             if (links.Count == 1)
                             {
                                 var link = ((JArray)wikiResponse[3])[0].Value<string>();
-                                input = ReplaceWithLink(input, " ", entity, link);
-                                input = ReplaceWithLink(input, ", ", entity, link);
-                                input = ReplaceWithLink(input, ". ", entity, link);
+                                input = ReplaceWithLink(input, " ", word, link);
+                                input = ReplaceWithLink(input, ", ", word, link);
+                                input = ReplaceWithLink(input, ". ", word, link);
 
                                 teamEvent.Description = input;
 
@@ -59,14 +73,14 @@ namespace TeamBuilder.Web.Services
                                     "formatversion=2&" + 
                                     "format=json&" + 
                                     "piprop=original&" + 
-                                   $"titles={entity.Name}");
+                                   $"titles={word}");
 
                                 var imageUrl = ((JObject)JsonConvert.DeserializeObject(wikiImageResponse))
                                     .SelectToken("$.query.pages[0].original.source")?.Value<string>();
 
                                 if (!string.IsNullOrEmpty(imageUrl))
                                 {
-                                    photos.Add(new { imageUrl = imageUrl, title = entity.Name, link = link });
+                                    photos.Add(new { imageUrl = imageUrl, title = word, link = link });
                                 }
                             }
                         }
@@ -77,9 +91,10 @@ namespace TeamBuilder.Web.Services
             teamEvent.Photos = JsonConvert.SerializeObject(photos);
         }
 
-        private static string ReplaceWithLink(string input, string delimiter, EntityRecord entity, string link)
+
+        private static string ReplaceWithLink(string input, string delimiter, string word, string link)
         {
-            input = input.Replace(" " + entity.Name + delimiter, $"<a target='_blank' href='{link}'> {entity.Name}{delimiter}</a>");
+            input = input.Replace(" " + word + delimiter, $"<a target='_blank' href='{link}'> {word}{delimiter}</a>");
             return input;
         }
     }
