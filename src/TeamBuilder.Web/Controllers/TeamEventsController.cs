@@ -104,7 +104,7 @@ namespace TeamBuilder.Web.Controllers
             teamEvent.TicketPrice = request.TicketPrice;
             teamEvent.Status = request.Status;
 
-            teamEvent.Description = await _textAnalyticsService.BuildTextWithLinksAsync(teamEvent.Description);
+            await _textAnalyticsService.BuildTextWithLinksAsync(teamEvent);
                         
             try
             {

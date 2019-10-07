@@ -3,9 +3,11 @@ using Microsoft.Azure.CognitiveServices.Language.TextAnalytics.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
+using TeamBuilder.Web.Models;
 
 namespace TeamBuilder.Web.Services
 {
@@ -18,38 +20,61 @@ namespace TeamBuilder.Web.Services
         private readonly TextAnalyticsClient _client = new TextAnalyticsClient(
             new ApiKeyServiceClientCredentials(AzureTextAnalyticsKey)) { Endpoint = AzureTextAnalyticsEndpoint };
 
-        public async Task<string> BuildTextWithLinksAsync(string input)
+        public async Task BuildTextWithLinksAsync(TeamEvent teamEvent)
         {
+            var input = teamEvent.Description;
             var result = await _client.EntitiesAsync(input, "en");
-            string wikiResponseRaw = null;
+            var photos = new List<string>();
             foreach (var entity in result.Entities)
             {
                 using (var httpClient = new HttpClient())
                 {
                     var encodedEntity = HttpUtility.UrlEncode(entity.Name);
+                    
+                    var wikiResponseRaw = await httpClient.GetStringAsync(
+                       $"{WikiSearchEndpoint}?action=opensearch&" + 
+                       $"search={encodedEntity}&" + 
+                        "limit=1&" + 
+                        "namespace=0&" + 
+                        "format=json");
 
-                    wikiResponseRaw = await httpClient.GetStringAsync(
-                        $"{WikiSearchEndpoint}?action=opensearch&search={encodedEntity}&limit=1&namespace=0&format=json");
-                }
-
-                if (!string.IsNullOrEmpty(wikiResponseRaw))
-                {
-                    var wikiResponse = (JArray)JsonConvert.DeserializeObject(wikiResponseRaw);
-                    if (wikiResponse.Count == 4)
+                    if (!string.IsNullOrEmpty(wikiResponseRaw))
                     {
-                        var links = (JArray)wikiResponse[3];
-                        if (links.Count == 1)
+                        var wikiResponse = (JArray)JsonConvert.DeserializeObject(wikiResponseRaw);
+                        if (wikiResponse.Count == 4)
                         {
-                            var link = ((JArray)wikiResponse[3])[0].Value<string>();
-                            input = ReplaceWithLink(input, " ", entity, link); 
-                            input = ReplaceWithLink(input, ", ", entity, link); 
-                            input = ReplaceWithLink(input, ". ", entity, link);
+                            var links = (JArray)wikiResponse[3];
+                            if (links.Count == 1)
+                            {
+                                var link = ((JArray)wikiResponse[3])[0].Value<string>();
+                                input = ReplaceWithLink(input, " ", entity, link);
+                                input = ReplaceWithLink(input, ", ", entity, link);
+                                input = ReplaceWithLink(input, ". ", entity, link);
+
+                                teamEvent.Description = input;
+
+                                var wikiImageResponse = await httpClient.GetStringAsync(
+                                   $"{WikiSearchEndpoint}?action=query&"+ 
+                                    "prop=pageimages&" +
+                                    "formatversion=2&" + 
+                                    "format=json&" + 
+                                    "piprop=original&" + 
+                                   $"titles={entity.Name}");
+
+                                var imageUrl = ((JObject)JsonConvert.DeserializeObject(wikiImageResponse))
+                                    .SelectToken("$.query.pages[0].original.source")?.Value<string>();
+
+                                if (!string.IsNullOrEmpty(imageUrl))
+                                {
+                                    photos.Add(imageUrl);
+                                }
+                            }
                         }
                     }
                 }
             }
 
-            return input;
+            teamEvent.Photos = JsonConvert.SerializeObject(photos);
         }
 
         private static string ReplaceWithLink(string input, string delimiter, EntityRecord entity, string link)
