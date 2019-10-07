@@ -24,7 +24,7 @@ namespace TeamBuilder.Web.Services
         {
             var input = teamEvent.Description;
             var result = await _client.EntitiesAsync(input, "en");
-            var photos = new List<string>();
+            var photos = new HashSet<dynamic>();
             foreach (var entity in result.Entities)
             {
                 using (var httpClient = new HttpClient())
@@ -66,7 +66,7 @@ namespace TeamBuilder.Web.Services
 
                                 if (!string.IsNullOrEmpty(imageUrl))
                                 {
-                                    photos.Add(imageUrl);
+                                    photos.Add(new { imageUrl = imageUrl, title = entity.Name, link = link });
                                 }
                             }
                         }

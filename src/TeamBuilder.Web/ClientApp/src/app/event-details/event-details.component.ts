@@ -28,6 +28,7 @@ export class EventDetailsComponent implements OnInit {
   faArrowUp = faArrowUp;
   comment = <Comment>{};
   comments = [];
+  photos = [];
   attendees = [];
   commentForm = this.formBuilder.group({
     text: new FormControl(this.comment.text, [Validators.required, Validators.minLength(3)])
@@ -66,6 +67,9 @@ export class EventDetailsComponent implements OnInit {
             }
             if (this.teamEvent.attendees) {
               this.attendees = JSON.parse(this.teamEvent.attendees);
+            }
+            if (this.teamEvent.photos) {
+              this.photos = JSON.parse(this.teamEvent.photos);
             }
           },
           error => console.error(error))
