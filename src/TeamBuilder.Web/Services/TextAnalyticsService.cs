@@ -1,6 +1,8 @@
 ﻿using Microsoft.Azure.CognitiveServices.Language.TextAnalytics;
+using Microsoft.Azure.CognitiveServices.Language.TextAnalytics.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
@@ -39,12 +41,20 @@ namespace TeamBuilder.Web.Services
                         if (links.Count == 1)
                         {
                             var link = ((JArray)wikiResponse[3])[0].Value<string>();
-                            input = input.Replace(entity.Name, $"<a target='_blank' href='{link}'>{entity.Name}</a>");
+                            input = ReplaceWithLink(input, " ", entity, link); 
+                            input = ReplaceWithLink(input, ", ", entity, link); 
+                            input = ReplaceWithLink(input, ". ", entity, link);
                         }
                     }
                 }
             }
 
+            return input;
+        }
+
+        private static string ReplaceWithLink(string input, string delimiter, EntityRecord entity, string link)
+        {
+            input = input.Replace(" " + entity.Name + delimiter, $"<a target='_blank' href='{link}'> {entity.Name}{delimiter}</a>");
             return input;
         }
     }
